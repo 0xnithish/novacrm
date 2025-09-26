@@ -1,6 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
 import { RevenueData } from "@/lib/data/mock-data"
 import { ArrowRight } from "lucide-react"
 
@@ -19,20 +18,10 @@ export function RevenueCard({ revenueData, totalRevenue }: RevenueCardProps) {
     }).format(value)
   }
 
-  const CustomTooltip = ({ active, payload }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-background border border-border rounded-lg p-3 shadow-lg">
-          <p className="text-sm font-medium mb-1">{payload[0].payload.category}</p>
-          <p className="text-lg font-bold">{formatCurrency(payload[0].value)}</p>
-        </div>
-      )
-    }
-    return null
-  }
+  const totalValue = revenueData.reduce((sum, item) => sum + item.value, 0)
 
   return (
-    <Card>
+  <Card className="gap-3">
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg">Revenue</CardTitle>
@@ -43,50 +32,54 @@ export function RevenueCard({ revenueData, totalRevenue }: RevenueCardProps) {
         </div>
       </CardHeader>
       <CardContent>
-        <div className="space-y-6">
+  <div className="space-y-4">
           <div>
             <p className="text-sm text-muted-foreground mb-1">Total Revenue</p>
             <p className="text-3xl font-bold">{formatCurrency(totalRevenue)}</p>
           </div>
 
-          <div className="h-48">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={revenueData}
-                layout="horizontal"
-                margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
-                <XAxis type="number" axisLine={false} tickLine={false} tick={false} />
-                <YAxis
-                  type="category"
-                  dataKey="category"
-                  axisLine={false}
-                  tickLine={false}
-                  tick={{ fontSize: 12 }}
-                  width={80}
-                />
-                <Tooltip content={<CustomTooltip />} />
-                <Bar
-                  dataKey="value"
-                  radius={[0, 4, 4, 0]}
-                  fill={(entry: RevenueData) => entry.color}
-                />
-              </BarChart>
-            </ResponsiveContainer>
+          <div className="space-y-2">
+            <div className="flex h-3 w-full overflow-hidden rounded-full bg-muted">
+              {revenueData.map((item) => {
+                const percentage = totalValue === 0 ? 0 : (item.value / totalValue) * 100
+                return (
+                  <div
+                    key={item.category}
+                    className="h-full"
+                    style={{
+                      width: `${percentage}%`,
+                      flexBasis: `${percentage}%`,
+                      flexGrow: percentage,
+                      backgroundColor: item.color,
+                    }}
+                  />
+                )
+              })}
+            </div>
+            <div className="flex items-center justify-between text-xs text-muted-foreground">
+              <span>Revenue split</span>
+              <span>{formatCurrency(totalValue)}</span>
+            </div>
           </div>
 
           <div className="space-y-2">
             {revenueData.map((item) => (
-              <div key={item.category} className="flex items-center justify-between text-sm">
-                <div className="flex items-center gap-2">
+              <div key={item.category} className="flex items-center justify-between rounded-lg border border-transparent px-2 py-1.5 transition-colors hover:border-border">
+                <div className="flex items-center gap-3">
                   <div
-                    className="w-3 h-3 rounded-full"
+                    className="h-3 w-3 rounded-full"
                     style={{ backgroundColor: item.color }}
                   />
-                  <span>{item.category}</span>
+                  <div>
+                    <p className="text-sm font-medium">{item.category}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {totalValue === 0
+                        ? '0% of total'
+                        : `${Math.round((item.value / totalValue) * 100)}% of total`}
+                    </p>
+                  </div>
                 </div>
-                <span className="font-medium">{formatCurrency(item.value)}</span>
+                <p className="text-sm font-semibold">{formatCurrency(item.value)}</p>
               </div>
             ))}
           </div>

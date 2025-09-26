@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { KPICard } from "@/components/dashboard/kpi-card"
-import { PerformanceAreaChart } from "@/components/charts/performance-area-chart"
+import { PerformanceAreaChart } from "@/components/dashboard/performance-area-chart"
 import { LeadsTable } from "@/components/dashboard/leads-table"
 import { RevenueCard } from "@/components/dashboard/revenue-card"
 import {
@@ -20,21 +20,6 @@ export default function Home() {
       {/* Performance Section */}
       <div>
         <h2 className="text-2xl font-bold tracking-tight mb-6">Performance This Month</h2>
-
-        {/* KPI Cards */}
-        <div className="grid gap-6 md:grid-cols-2 mb-6">
-          <KPICard
-            title="Total Amount"
-            value={mockKPIData.totalAmount}
-            subtitle="USD"
-            trend={{ value: "+12.5%", positive: true }}
-          />
-          <KPICard
-            title="Total Deals"
-            value={mockKPIData.totalDeals}
-            trend={{ value: "+8", positive: true }}
-          />
-        </div>
 
         {/* Performance Chart */}
         <PerformanceAreaChart
