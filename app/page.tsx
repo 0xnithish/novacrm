@@ -19,7 +19,7 @@ export default function Home() {
     <div className="space-y-6">
       {/* Performance Section */}
       <div>
-        <h2 className="text-2xl font-bold tracking-tight mb-6">Performance This Month</h2>
+        <h2 className="text-xl font-bold mb-6">Performance This Month</h2>
 
         {/* Performance Chart */}
         <PerformanceAreaChart

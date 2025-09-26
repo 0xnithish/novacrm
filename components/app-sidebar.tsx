@@ -1,5 +1,6 @@
 "use client"
 
+import { useDealDetails } from "@/hooks/useDealDetails"
 import {
   Sidebar,
   SidebarContent,
@@ -26,6 +27,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import {
   LayoutDashboard,
   Building,
@@ -37,10 +39,16 @@ import {
   ChevronUp,
   User,
   User2,
+  X,
+  Mail,
+  Phone,
+  DollarSign,
+  Calendar,
 } from "lucide-react"
 
 export function AppSidebar() {
   const { state } = useSidebar()
+  const { selectedDeal, closeDealDetails } = useDealDetails()
 
   return (
     <Sidebar collapsible="icon">
@@ -91,20 +99,12 @@ export function AppSidebar() {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent side="right" align="start">
                     <DropdownMenuItem>
-                      <Building className="mr-2 h-4 w-4" />
-                      <a href="/deals">All Deals</a>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
                       <CheckSquare className="mr-2 h-4 w-4" />
                       <a href="/deals/active">Active Deals</a>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                      <User className="mr-2 h-4 w-4" />
-                      <a href="/deals/won">Won Deals</a>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
                       <Settings className="mr-2 h-4 w-4" />
-                      <a href="/deals/lost">Lost Deals</a>
+                      <a href="/deals/closed">Closed Deals</a>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -130,6 +130,90 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        {/* Deal Details Section */}
+        {selectedDeal && (
+          <SidebarGroup>
+            <SidebarGroupLabel className="flex items-center justify-between">
+              <span>Deal Details</span>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={closeDealDetails}
+                className="h-6 w-6 p-0"
+              >
+                <X className="h-3 w-3" />
+              </Button>
+            </SidebarGroupLabel>
+            <SidebarGroupContent>
+              <ScrollArea className="h-[300px]">
+                <div className="space-y-4 p-2">
+                  <div>
+                    <h4 className="font-semibold text-sm">{selectedDeal.title}</h4>
+                    <p className="text-xs text-muted-foreground">ID: {selectedDeal.id}</p>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2">
+                      <User className="h-4 w-4 text-muted-foreground" />
+                      <div>
+                        <p className="text-sm font-medium">{selectedDeal.clientName}</p>
+                        <p className="text-xs text-muted-foreground">Client</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <Mail className="h-4 w-4 text-muted-foreground" />
+                      <div>
+                        <p className="text-sm">{selectedDeal.email}</p>
+                        <p className="text-xs text-muted-foreground">Email</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <Phone className="h-4 w-4 text-muted-foreground" />
+                      <div>
+                        <p className="text-sm">{selectedDeal.phone}</p>
+                        <p className="text-xs text-muted-foreground">Phone</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <DollarSign className="h-4 w-4 text-muted-foreground" />
+                      <div>
+                        <p className="text-sm font-medium">{selectedDeal.amount}</p>
+                        <p className="text-xs text-muted-foreground">Amount</p>
+                      </div>
+                    </div>
+
+                    {selectedDeal.closedDate && (
+                      <div className="flex items-center gap-2">
+                        <Calendar className="h-4 w-4 text-muted-foreground" />
+                        <div>
+                          <p className="text-sm">{selectedDeal.closedDate}</p>
+                          <p className="text-xs text-muted-foreground">Closed Date</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-2">
+                    <Button size="sm" className="w-full bg-[#0a8126] hover:bg-[#0a8126]/90 text-white">
+                      Edit Deal
+                    </Button>
+                    <Button size="sm" variant="outline" className="w-full">
+                      View Full Details
+                    </Button>
+                  </div>
+                </div>
+              </ScrollArea>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
       </SidebarContent>
 
       <SidebarFooter className="border-t border-sidebar-border p-2">

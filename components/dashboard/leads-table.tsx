@@ -63,22 +63,6 @@ export function LeadsTable({ leads, leadsCount }: LeadsTableProps) {
               {leadsCount}
             </Badge>
           </div>
-          <div className="flex items-center gap-2 text-sm">
-            <Button
-              variant="secondary"
-              size="sm"
-              className="h-8 rounded-full px-4"
-            >
-              This Week
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-8 rounded-full px-4 text-muted-foreground hover:text-foreground"
-            >
-              This Month
-            </Button>
-          </div>
         </div>
       </CardHeader>
       <CardContent className="p-0">
