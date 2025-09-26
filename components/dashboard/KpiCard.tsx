@@ -92,7 +92,7 @@ export function KPICard({
   return (
     <article
       className={cn(
-        "group relative flex h-full min-h-[120px] flex-col justify-between overflow-hidden rounded-xl border border-border bg-card px-6 pt-5 text-card-foreground shadow-[0_18px_45px_-20px_rgba(15,23,42,0.18)] transition-shadow dark:shadow-[0_18px_45px_-18px_rgba(15,23,42,0.45)]",
+        "group relative flex h-full min-h-[120px] flex-col justify-between overflow-hidden rounded-xl border border-border bg-card px-6 pt-5 text-card-foreground shadow-[0_18px_45px_-20px_rgba(15,23,42,0.18)] transition-shadow dark:shadow-[0_18px_45px_-18px_rgba(255,255,255,0.05)]",
         className
       )}
     >

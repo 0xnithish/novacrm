@@ -6,8 +6,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { User, X, Plus } from "lucide-react"
+import { useLeadDetails } from "@/hooks/useLeadDetails"
+import { LeadDetailPanel } from "@/components/lead-detail/LeadDetailPanel"
 
 export default function ActiveDealsPage() {
+  const { openLeadDetails } = useLeadDetails()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [formData, setFormData] = useState({
     clientName: '',
@@ -17,6 +20,7 @@ export default function ActiveDealsPage() {
     title: ''
   })
 
+  
   // Mock active deals data
   const activeDeals = [
     {
@@ -25,7 +29,56 @@ export default function ActiveDealsPage() {
       clientName: "Ronald Richards",
       email: "ronald.richards@email.com",
       phone: "+1 (555) 123-4567",
-      amount: "$450,000"
+      amount: "$450,000",
+      leadOwner: "Sarah Johnson",
+      location: "New York, NY",
+      referralPartner: "ABC Realty",
+      annualIncome: "$125,000",
+      progressPercentage: 76,
+      activities: [
+        {
+          id: "1",
+          type: "Call",
+          description: "Initial consultation call",
+          timestamp: "2024-09-25T10:30:00Z",
+          status: "completed" as const
+        },
+        {
+          id: "2",
+          type: "Email",
+          description: "Sent loan application documents",
+          timestamp: "2024-09-24T14:15:00Z",
+          status: "completed" as const
+        },
+        {
+          id: "3",
+          type: "Meeting",
+          description: "Property viewing scheduled",
+          timestamp: "2024-09-26T09:00:00Z",
+          status: "in-progress" as const
+        },
+        {
+          id: "4",
+          type: "Document",
+          description: "Income verification pending",
+          timestamp: "2024-09-23T16:45:00Z",
+          status: "new" as const
+        }
+      ],
+      notes: [
+        {
+          id: "1",
+          title: "Initial Consultation",
+          content: "Client interested in property loan. Good credit score, stable income. Needs pre-approval.",
+          timestamp: "2024-09-25T11:00:00Z"
+        },
+        {
+          id: "2",
+          title: "Document Requirements",
+          content: "Requested pay stubs, tax returns, and bank statements for verification.",
+          timestamp: "2024-09-24T15:30:00Z"
+        }
+      ]
     },
     {
       id: "124",
@@ -33,7 +86,36 @@ export default function ActiveDealsPage() {
       clientName: "Jane Smith",
       email: "jane.smith@email.com",
       phone: "+1 (555) 234-5678",
-      amount: "$280,000"
+      amount: "$280,000",
+      leadOwner: "David Chen",
+      location: "San Francisco, CA",
+      referralPartner: "BizGrow Inc",
+      annualIncome: "$200,000",
+      progressPercentage: 45,
+      activities: [
+        {
+          id: "1",
+          type: "Call",
+          description: "Business loan consultation",
+          timestamp: "2024-09-24T10:00:00Z",
+          status: "completed" as const
+        },
+        {
+          id: "2",
+          type: "Email",
+          description: "Requested financial statements",
+          timestamp: "2024-09-23T14:30:00Z",
+          status: "in-progress" as const
+        }
+      ],
+      notes: [
+        {
+          id: "1",
+          title: "Business Loan Inquiry",
+          content: "Client looking to expand operations. Strong business plan, needs $280k financing.",
+          timestamp: "2024-09-24T11:00:00Z"
+        }
+      ]
     },
     {
       id: "125",
@@ -41,7 +123,22 @@ export default function ActiveDealsPage() {
       clientName: "Mike Johnson",
       email: "mike.johnson@email.com",
       phone: "+1 (555) 345-6789",
-      amount: "$85,000"
+      amount: "$85,000",
+      leadOwner: "Emily Davis",
+      location: "Chicago, IL",
+      referralPartner: "AutoMart",
+      annualIncome: "$75,000",
+      progressPercentage: 60,
+      activities: [
+        {
+          id: "1",
+          type: "Call",
+          description: "Vehicle loan inquiry",
+          timestamp: "2024-09-22T11:00:00Z",
+          status: "completed" as const
+        }
+      ],
+      notes: []
     },
     {
       id: "126",
@@ -49,7 +146,22 @@ export default function ActiveDealsPage() {
       clientName: "Sarah Wilson",
       email: "sarah.wilson@email.com",
       phone: "+1 (555) 456-7890",
-      amount: "$120,000"
+      amount: "$120,000",
+      leadOwner: "Michael Brown",
+      location: "Austin, TX",
+      referralPartner: "HomePlus",
+      annualIncome: "$110,000",
+      progressPercentage: 30,
+      activities: [
+        {
+          id: "1",
+          type: "Call",
+          description: "Home improvement loan discussion",
+          timestamp: "2024-09-21T14:00:00Z",
+          status: "in-progress" as const
+        }
+      ],
+      notes: []
     },
     {
       id: "127",
@@ -57,7 +169,22 @@ export default function ActiveDealsPage() {
       clientName: "David Brown",
       email: "david.brown@email.com",
       phone: "+1 (555) 567-8901",
-      amount: "$650,000"
+      amount: "$650,000",
+      leadOwner: "Lisa Anderson",
+      location: "Miami, FL",
+      referralPartner: "RealtyPro",
+      annualIncome: "$180,000",
+      progressPercentage: 85,
+      activities: [
+        {
+          id: "1",
+          type: "Meeting",
+          description: "Property investment consultation",
+          timestamp: "2024-09-20T10:00:00Z",
+          status: "completed" as const
+        }
+      ],
+      notes: []
     },
     {
       id: "128",
@@ -65,7 +192,22 @@ export default function ActiveDealsPage() {
       clientName: "Emily Davis",
       email: "emily.davis@email.com",
       phone: "+1 (555) 678-9012",
-      amount: "$1,200,000"
+      amount: "$1,200,000",
+      leadOwner: "James Wilson",
+      location: "Seattle, WA",
+      referralPartner: "Commercial Properties Inc",
+      annualIncome: "$250,000",
+      progressPercentage: 70,
+      activities: [
+        {
+          id: "1",
+          type: "Meeting",
+          description: "Commercial property consultation",
+          timestamp: "2024-09-19T09:00:00Z",
+          status: "completed" as const
+        }
+      ],
+      notes: []
     },
     {
       id: "129",
@@ -73,7 +215,22 @@ export default function ActiveDealsPage() {
       clientName: "Robert Martinez",
       email: "robert.martinez@email.com",
       phone: "+1 (555) 789-0123",
-      amount: "$150,000"
+      amount: "$150,000",
+      leadOwner: "Jennifer Lee",
+      location: "Denver, CO",
+      referralPartner: "Small Biz Assoc",
+      annualIncome: "$85,000",
+      progressPercentage: 40,
+      activities: [
+        {
+          id: "1",
+          type: "Call",
+          description: "Small business loan inquiry",
+          timestamp: "2024-09-18T13:00:00Z",
+          status: "in-progress" as const
+        }
+      ],
+      notes: []
     },
     {
       id: "130",
@@ -81,7 +238,22 @@ export default function ActiveDealsPage() {
       clientName: "Lisa Anderson",
       email: "lisa.anderson@email.com",
       phone: "+1 (555) 890-1234",
-      amount: "$95,000"
+      amount: "$95,000",
+      leadOwner: "Robert Garcia",
+      location: "Phoenix, AZ",
+      referralPartner: "EquipSource",
+      annualIncome: "$90,000",
+      progressPercentage: 55,
+      activities: [
+        {
+          id: "1",
+          type: "Email",
+          description: "Equipment financing request",
+          timestamp: "2024-09-17T16:00:00Z",
+          status: "completed" as const
+        }
+      ],
+      notes: []
     },
     {
       id: "131",
@@ -89,7 +261,22 @@ export default function ActiveDealsPage() {
       clientName: "James Taylor",
       email: "james.taylor@email.com",
       phone: "+1 (555) 901-2345",
-      amount: "$750,000"
+      amount: "$750,000",
+      leadOwner: "Maria Rodriguez",
+      location: "Portland, OR",
+      referralPartner: "BuildRight",
+      annualIncome: "$150,000",
+      progressPercentage: 90,
+      activities: [
+        {
+          id: "1",
+          type: "Meeting",
+          description: "Construction financing approved",
+          timestamp: "2024-09-16T11:00:00Z",
+          status: "completed" as const
+        }
+      ],
+      notes: []
     },
     {
       id: "132",
@@ -97,7 +284,22 @@ export default function ActiveDealsPage() {
       clientName: "Patricia White",
       email: "patricia.white@email.com",
       phone: "+1 (555) 012-3456",
-      amount: "$320,000"
+      amount: "$320,000",
+      leadOwner: "Dr. John Smith",
+      location: "Boston, MA",
+      referralPartner: "MedFinance",
+      annualIncome: "$200,000",
+      progressPercentage: 65,
+      activities: [
+        {
+          id: "1",
+          type: "Call",
+          description: "Medical practice financing consultation",
+          timestamp: "2024-09-15T15:00:00Z",
+          status: "in-progress" as const
+        }
+      ],
+      notes: []
     }
   ]
 
@@ -177,6 +379,7 @@ export default function ActiveDealsPage() {
                       <Button
                         size="sm"
                         className="bg-[#0a8126] hover:bg-[#0a8126]/90 text-white"
+                        onClick={() => openLeadDetails(deal)}
                       >
                         View Details
                       </Button>
@@ -191,8 +394,8 @@ export default function ActiveDealsPage() {
 
       {/* New Deal Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+        <div className="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-background text-foreground rounded-lg p-6 w-full max-w-md border border-border shadow-lg transition-colors">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold">Add New Deal</h2>
               <Button
@@ -207,7 +410,7 @@ export default function ActiveDealsPage() {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <Label htmlFor="clientName">Client Name</Label>
+                <Label htmlFor="clientName" className="my-2">Client Name</Label>
                 <Input
                   id="clientName"
                   name="clientName"
@@ -218,7 +421,7 @@ export default function ActiveDealsPage() {
               </div>
 
               <div>
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="my-2">Email</Label>
                 <Input
                   id="email"
                   name="email"
@@ -230,7 +433,7 @@ export default function ActiveDealsPage() {
               </div>
 
               <div>
-                <Label htmlFor="phone">Phone</Label>
+                <Label htmlFor="phone" className="my-2">Phone</Label>
                 <Input
                   id="phone"
                   name="phone"
@@ -241,7 +444,7 @@ export default function ActiveDealsPage() {
               </div>
 
               <div>
-                <Label htmlFor="title">Deal Title</Label>
+                <Label htmlFor="title" className="my-2">Deal Title</Label>
                 <Input
                   id="title"
                   name="title"
@@ -252,7 +455,7 @@ export default function ActiveDealsPage() {
               </div>
 
               <div>
-                <Label htmlFor="amount">Amount</Label>
+                <Label htmlFor="amount" className="my-2">Amount</Label>
                 <Input
                   id="amount"
                   name="amount"
@@ -283,6 +486,8 @@ export default function ActiveDealsPage() {
           </div>
         </div>
       )}
+
+      <LeadDetailPanel />
     </div>
   )
 }

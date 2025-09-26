@@ -66,59 +66,103 @@ export function LeadsTable({ leads, leadsCount }: LeadsTableProps) {
         </div>
       </CardHeader>
       <CardContent className="p-0">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="border-b border-border bg-muted/40">
-              <tr>
-                <th className="text-left p-4 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Name</th>
-                <th className="text-left p-4 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Contact</th>
-                <th className="text-left p-4 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Status</th>
-                <th className="p-4 text-right text-xs font-semibold uppercase tracking-wide text-muted-foreground">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {displayedLeads.map((lead, index) => (
-                <tr key={lead.id} className="border-b border-border transition-colors hover:bg-muted/40">
-                  <td className="p-4">
-                    <div className="flex items-center gap-3">
-                      <Avatar className="h-9 w-9 border border-border">
-                        <AvatarImage src={lead.avatar} alt={lead.name} />
-                        <AvatarFallback className="text-xs font-medium">
-                          {getInitials(lead.name)}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="font-medium">{lead.name}</p>
-                        <p className="text-xs text-muted-foreground">{lead.email}</p>
-                      </div>
+        <div className="divide-y border-t border-border md:hidden">
+          {displayedLeads.map((lead, index) => (
+            <div key={lead.id} className="flex flex-col gap-4 px-4 py-5">
+              <div className="flex items-start gap-4">
+                <Avatar className="h-10 w-10 border border-border">
+                  <AvatarImage src={lead.avatar} alt={lead.name} />
+                  <AvatarFallback className="text-xs font-medium">
+                    {getInitials(lead.name)}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex-1 space-y-3 text-sm">
+                  <div className="space-y-1">
+                    <div className="flex flex-col gap-1">
+                      <p className="font-medium text-foreground">{lead.name}</p>
+                      <p className="text-xs text-muted-foreground">{lead.email}</p>
                     </div>
-                  </td>
-                  <td className="p-4">
-                    <div className="flex flex-col text-sm">
+                    <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
                       <span className="font-medium text-foreground">{lead.contact}</span>
-                      <span className="text-xs text-muted-foreground">{getLastActivityLabel(index)}</span>
+                      <span className="text-muted-foreground/70">•</span>
+                      <span>{getLastActivityLabel(index)}</span>
                     </div>
-                  </td>
-                  <td className="p-4">
+                  </div>
+                  <div className="flex items-center justify-between gap-3">
                     <Badge
                       variant="secondary"
-                      className={getStatusColor(lead.status)}
+                      className={`${getStatusColor(lead.status)} px-2 py-1 text-[11px]`}
                     >
                       {formatStatus(lead.status)}
                     </Badge>
-                  </td>
-                  <td className="p-4 text-right">
-                    <Button variant="ghost" size="sm" className="h-8 px-3 text-sm text-primary hover:text-primary">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 px-3 text-xs text-primary hover:text-primary"
+                    >
                       View
                     </Button>
-                  </td>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="hidden md:block">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="border-b border-border bg-muted/40">
+                <tr>
+                  <th className="p-4 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">Name</th>
+                  <th className="p-4 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">Contact</th>
+                  <th className="p-4 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">Status</th>
+                  <th className="p-4 text-right text-xs font-semibold uppercase tracking-wide text-muted-foreground">Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {displayedLeads.map((lead, index) => (
+                  <tr key={lead.id} className="border-b border-border transition-colors hover:bg-muted/40">
+                    <td className="p-4">
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-9 w-9 border border-border">
+                          <AvatarImage src={lead.avatar} alt={lead.name} />
+                          <AvatarFallback className="text-xs font-medium">
+                            {getInitials(lead.name)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="font-medium">{lead.name}</p>
+                          <p className="text-xs text-muted-foreground">{lead.email}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="p-4">
+                      <div className="flex flex-col text-sm">
+                        <span className="font-medium text-foreground">{lead.contact}</span>
+                        <span className="text-xs text-muted-foreground">{getLastActivityLabel(index)}</span>
+                      </div>
+                    </td>
+                    <td className="p-4">
+                      <Badge
+                        variant="secondary"
+                        className={getStatusColor(lead.status)}
+                      >
+                        {formatStatus(lead.status)}
+                      </Badge>
+                    </td>
+                    <td className="p-4 text-right">
+                      <Button variant="ghost" size="sm" className="h-8 px-3 text-sm text-primary hover:text-primary">
+                        View
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </CardContent>
-      <CardFooter className="justify-center px-4 ">
+      <CardFooter className="justify-center px-4 pb-4 pt-2 md:pt-4">
         <Button variant="ghost" size="sm" asChild className="h-8 rounded-full px-3 text-primary hover:text-primary">
           <Link href="/deals">View all</Link>
         </Button>

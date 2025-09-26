@@ -73,7 +73,7 @@ export function AppSidebar() {
               className="rounded-sm"
               priority
             />
-            <span className="text-lg font-semibold">Nova</span>
+            <span className="text-lg font-semibold">Nebula</span>
           </div>
         </div>
       </SidebarHeader>
@@ -98,7 +98,7 @@ export function AppSidebar() {
                   isActive={isDealsOpen}
                   onClick={() => setIsDealsOpen((prev) => !prev)}
                 >
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 cursor-pointer">
                     <Building className="h-4 w-4" />
                     <span>Deals</span>
                   </div>
@@ -248,10 +248,10 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <Link href="/settings" className="flex items-center gap-2">
+              {/* <Link href="/settings" className="flex items-center gap-2">
                 <Settings className="h-4 w-4" />
                 <span>Settings</span>
-              </Link>
+              </Link> */}
             </SidebarMenuButton>
           </SidebarMenuItem>
 

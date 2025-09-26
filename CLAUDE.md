@@ -26,17 +26,44 @@ This project uses `pnpm` as the package manager. All npm commands should be run 
 - **UI Components**: shadcn/ui with New York style
 - **Icons**: Lucide React
 - **Font**: Geist from next/font/google
+- **Charts**: Recharts 2.15.4
+- **Theme**: next-themes for dark/light mode
 
 ### Project Structure
 ```
-app/              # Next.js App Router
-├── layout.tsx    # Root layout with Geist font
-├── page.tsx      # Home page
-└── globals.css   # Global styles
-lib/              # Utility functions
-└── utils.ts      # clsx + tailwind-merge utility
-components.json   # shadcn/ui configuration
+app/                    # Next.js App Router
+├── layout.tsx          # Root layout with sidebar, theme, and providers
+├── page.tsx            # Dashboard home page
+├── deals/              # Deals section
+│   ├── page.tsx        # Deals overview
+│   ├── active/         # Active deals
+│   └── closed/         # Closed deals
+├── tasks/              # Tasks page
+├── integration/        # Integration page
+├── settings/           # Settings page
+└── support/            # Support page
+components/             # React components
+├── ui/                 # shadcn/ui components
+├── dashboard/          # Dashboard-specific components
+├── AppSidebar.tsx      # Main sidebar navigation
+└── LayoutHeader.tsx    # Header component
+lib/                    # Utility functions
+├── utils.ts            # clsx + tailwind-merge utility
+└── data/               # Mock data and utilities
+    └── mock-data.ts    # CRM mock data
+hooks/                  # Custom React hooks
+├── use-mobile.ts       # Mobile detection hook
+├── use-current-page.ts # Current page tracking
+└── useDealDetails.ts   # Deal details context provider
 ```
+
+### App Architecture
+The application uses a consistent sidebar layout with:
+- **Sidebar Navigation**: AppSidebar with main CRM sections
+- **Header**: LayoutHeader with page title and actions
+- **Content Area**: Scrollable main content region
+- **Theme System**: Dark/light mode with system preference
+- **Context Providers**: DealDetailsProvider for global deal state
 
 ### shadcn/ui Configuration
 - Style: New York
@@ -46,10 +73,20 @@ components.json   # shadcn/ui configuration
 - Uses TypeScript (.tsx) and React Server Components (RSC)
 
 ### Key Dependencies
+- `@radix-ui/*` - Headless UI primitives
 - `class-variance-authority` - Component variants
 - `clsx` - Conditional class names
 - `tailwind-merge` - Tailwind class merging
 - `tw-animate-css` - Tailwind animations
+- `recharts` - Charting and data visualization
+- `next-themes` - Theme management
+
+### Component Patterns
+- All components follow shadcn/ui patterns with proper TypeScript typing
+- Use the `cn()` utility from `@/lib/utils` for class name merging
+- Dashboard components are organized in separate folder
+- UI components are generated through shadcn/ui CLI
+- Custom hooks provide reusable logic and state management
 
 ## Development Notes
 
@@ -58,3 +95,5 @@ components.json   # shadcn/ui configuration
 - Use the `cn()` utility from `@/lib/utils` for class name merging
 - TypeScript is strictly enforced throughout the codebase
 - The project uses Tailwind CSS v4's PostCSS integration
+- Mock data is provided in `lib/data/mock-data.ts` for development
+- The app uses a consistent layout with sidebar navigation and header

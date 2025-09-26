@@ -6,8 +6,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { User, X, Plus } from "lucide-react"
+import { useLeadDetails } from "@/hooks/useLeadDetails"
+import { LeadDetailPanel } from "@/components/lead-detail/LeadDetailPanel"
 
 export default function ClosedDealsPage() {
+  const { openLeadDetails } = useLeadDetails()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [formData, setFormData] = useState({
     clientName: '',
@@ -26,7 +29,43 @@ export default function ClosedDealsPage() {
       email: "john.anderson@email.com",
       phone: "+1 (555) 111-2222",
       amount: "$350,000",
-      closedDate: "2024-09-15"
+      closedDate: "2024-09-15",
+      leadOwner: "Mike Wilson",
+      location: "Los Angeles, CA",
+      referralPartner: "Sunset Realty",
+      annualIncome: "$95,000",
+      progressPercentage: 100,
+      activities: [
+        {
+          id: "1",
+          type: "Call",
+          description: "Initial mortgage consultation",
+          timestamp: "2024-09-10T14:30:00Z",
+          status: "completed" as const
+        },
+        {
+          id: "2",
+          type: "Document",
+          description: "Application submitted and approved",
+          timestamp: "2024-09-12T11:15:00Z",
+          status: "completed" as const
+        },
+        {
+          id: "3",
+          type: "Meeting",
+          description: "Closing documents signed",
+          timestamp: "2024-09-15T16:00:00Z",
+          status: "completed" as const
+        }
+      ],
+      notes: [
+        {
+          id: "1",
+          title: "Deal Closed Successfully",
+          content: "Great client, smooth process. Deal closed on time with all requirements met.",
+          timestamp: "2024-09-15T17:00:00Z"
+        }
+      ]
     },
     {
       id: "102",
@@ -35,7 +74,22 @@ export default function ClosedDealsPage() {
       email: "maria.garcia@email.com",
       phone: "+1 (555) 222-3333",
       amount: "$25,000",
-      closedDate: "2024-09-10"
+      closedDate: "2024-09-10",
+      leadOwner: "AutoFin Direct",
+      location: "Los Angeles, CA",
+      referralPartner: "CarMax",
+      annualIncome: "$65,000",
+      progressPercentage: 100,
+      activities: [
+        {
+          id: "1",
+          type: "Call",
+          description: "Auto loan application processed",
+          timestamp: "2024-09-08T10:00:00Z",
+          status: "completed" as const
+        }
+      ],
+      notes: []
     },
     {
       id: "103",
@@ -44,7 +98,22 @@ export default function ClosedDealsPage() {
       email: "robert.chen@email.com",
       phone: "+1 (555) 333-4444",
       amount: "$75,000",
-      closedDate: "2024-09-08"
+      closedDate: "2024-09-08",
+      leadOwner: "EquipFin Solutions",
+      location: "San Jose, CA",
+      referralPartner: "TechSupply Co",
+      annualIncome: "$95,000",
+      progressPercentage: 100,
+      activities: [
+        {
+          id: "1",
+          type: "Meeting",
+          description: "Equipment financing approved",
+          timestamp: "2024-09-05T14:00:00Z",
+          status: "completed" as const
+        }
+      ],
+      notes: []
     },
     {
       id: "104",
@@ -53,7 +122,22 @@ export default function ClosedDealsPage() {
       email: "jennifer.lopez@email.com",
       phone: "+1 (555) 444-5555",
       amount: "$120,000",
-      closedDate: "2024-09-05"
+      closedDate: "2024-09-05",
+      leadOwner: "HomeEquity Plus",
+      location: "Miami, FL",
+      referralPartner: "RealtyMax",
+      annualIncome: "$130,000",
+      progressPercentage: 100,
+      activities: [
+        {
+          id: "1",
+          type: "Call",
+          description: "Home equity line processed",
+          timestamp: "2024-09-01T11:00:00Z",
+          status: "completed" as const
+        }
+      ],
+      notes: []
     },
     {
       id: "105",
@@ -62,7 +146,22 @@ export default function ClosedDealsPage() {
       email: "michael.thompson@email.com",
       phone: "+1 (555) 555-6666",
       amount: "$850,000",
-      closedDate: "2024-09-01"
+      closedDate: "2024-09-01",
+      leadOwner: "CommReal Estate",
+      location: "Dallas, TX",
+      referralPartner: "Business Properties",
+      annualIncome: "$220,000",
+      progressPercentage: 100,
+      activities: [
+        {
+          id: "1",
+          type: "Meeting",
+          description: "Commercial property acquisition completed",
+          timestamp: "2024-08-28T09:00:00Z",
+          status: "completed" as const
+        }
+      ],
+      notes: []
     },
     {
       id: "106",
@@ -71,7 +170,22 @@ export default function ClosedDealsPage() {
       email: "sarah.williams@email.com",
       phone: "+1 (555) 666-7777",
       amount: "$15,000",
-      closedDate: "2024-08-28"
+      closedDate: "2024-08-28",
+      leadOwner: "Personal Loan Co",
+      location: "Atlanta, GA",
+      referralPartner: "Credit Union",
+      annualIncome: "$55,000",
+      progressPercentage: 100,
+      activities: [
+        {
+          id: "1",
+          type: "Call",
+          description: "Personal loan approved and disbursed",
+          timestamp: "2024-08-25T13:00:00Z",
+          status: "completed" as const
+        }
+      ],
+      notes: []
     },
     {
       id: "107",
@@ -80,7 +194,22 @@ export default function ClosedDealsPage() {
       email: "david.martinez@email.com",
       phone: "+1 (555) 777-8888",
       amount: "$450,000",
-      closedDate: "2024-08-25"
+      closedDate: "2024-08-25",
+      leadOwner: "BuildFinance",
+      location: "Phoenix, AZ",
+      referralPartner: "ConstructCorp",
+      annualIncome: "$140,000",
+      progressPercentage: 100,
+      activities: [
+        {
+          id: "1",
+          type: "Meeting",
+          description: "Construction project funding completed",
+          timestamp: "2024-08-20T10:00:00Z",
+          status: "completed" as const
+        }
+      ],
+      notes: []
     },
     {
       id: "108",
@@ -89,7 +218,22 @@ export default function ClosedDealsPage() {
       email: "lisa.brown@email.com",
       phone: "+1 (555) 888-9999",
       amount: "$625,000",
-      closedDate: "2024-08-20"
+      closedDate: "2024-08-20",
+      leadOwner: "InvestRealty",
+      location: "Las Vegas, NV",
+      referralPartner: "Property Investors",
+      annualIncome: "$180,000",
+      progressPercentage: 100,
+      activities: [
+        {
+          id: "1",
+          type: "Call",
+          description: "Investment property purchase completed",
+          timestamp: "2024-08-15T14:00:00Z",
+          status: "completed" as const
+        }
+      ],
+      notes: []
     },
     {
       id: "109",
@@ -98,7 +242,22 @@ export default function ClosedDealsPage() {
       email: "james.wilson@email.com",
       phone: "+1 (555) 999-0000",
       amount: "$95,000",
-      closedDate: "2024-08-15"
+      closedDate: "2024-08-15",
+      leadOwner: "BizLoan Express",
+      location: "Denver, CO",
+      referralPartner: "Small Business Assoc",
+      annualIncome: "$75,000",
+      progressPercentage: 100,
+      activities: [
+        {
+          id: "1",
+          type: "Meeting",
+          description: "Small business loan successfully processed",
+          timestamp: "2024-08-10T11:00:00Z",
+          status: "completed" as const
+        }
+      ],
+      notes: []
     },
     {
       id: "110",
@@ -107,7 +266,22 @@ export default function ClosedDealsPage() {
       email: "patricia.davis@email.com",
       phone: "+1 (555) 000-1111",
       amount: "$180,000",
-      closedDate: "2024-08-10"
+      closedDate: "2024-08-10",
+      leadOwner: "MedEquip Finance",
+      location: "Boston, MA",
+      referralPartner: "Medical Suppliers",
+      annualIncome: "$120,000",
+      progressPercentage: 100,
+      activities: [
+        {
+          id: "1",
+          type: "Call",
+          description: "Medical equipment financing completed",
+          timestamp: "2024-08-05T15:00:00Z",
+          status: "completed" as const
+        }
+      ],
+      notes: []
     }
   ]
 
@@ -188,6 +362,7 @@ export default function ClosedDealsPage() {
                       <Button
                         size="sm"
                         className="bg-[#0a8126] hover:bg-[#0a8126]/90 text-white"
+                        onClick={() => openLeadDetails(deal)}
                       >
                         View Details
                       </Button>
@@ -202,8 +377,8 @@ export default function ClosedDealsPage() {
 
       {/* Add Closed Deal Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+        <div className="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-background text-foreground rounded-lg p-6 w-full max-w-md border border-border shadow-lg transition-colors">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold">Add Closed Deal</h2>
               <Button
@@ -218,7 +393,7 @@ export default function ClosedDealsPage() {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <Label htmlFor="clientName">Client Name</Label>
+                <Label htmlFor="clientName" className="my-2">Client Name</Label>
                 <Input
                   id="clientName"
                   name="clientName"
@@ -229,7 +404,7 @@ export default function ClosedDealsPage() {
               </div>
 
               <div>
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="my-2">Email</Label>
                 <Input
                   id="email"
                   name="email"
@@ -241,7 +416,7 @@ export default function ClosedDealsPage() {
               </div>
 
               <div>
-                <Label htmlFor="phone">Phone</Label>
+                <Label htmlFor="phone" className="my-2">Phone</Label>
                 <Input
                   id="phone"
                   name="phone"
@@ -252,7 +427,7 @@ export default function ClosedDealsPage() {
               </div>
 
               <div>
-                <Label htmlFor="title">Deal Title</Label>
+                <Label htmlFor="title" className="my-2">Deal Title</Label>
                 <Input
                   id="title"
                   name="title"
@@ -263,7 +438,7 @@ export default function ClosedDealsPage() {
               </div>
 
               <div>
-                <Label htmlFor="amount">Amount</Label>
+                <Label htmlFor="amount" className="my-2">Amount</Label>
                 <Input
                   id="amount"
                   name="amount"
@@ -294,6 +469,8 @@ export default function ClosedDealsPage() {
           </div>
         </div>
       )}
+
+      <LeadDetailPanel />
     </div>
   )
 }

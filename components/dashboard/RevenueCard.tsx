@@ -21,21 +21,25 @@ export function RevenueCard({ revenueData, totalRevenue }: RevenueCardProps) {
   const totalValue = revenueData.reduce((sum, item) => sum + item.value, 0)
 
   return (
-  <Card className="gap-3">
+    <Card className="gap-3">
       <CardHeader className="pb-4">
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-lg">Revenue</CardTitle>
-          <Button variant="ghost" size="sm" className="text-sm">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <CardTitle className="text-base font-semibold sm:text-lg">Revenue</CardTitle>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="self-start text-xs sm:self-auto sm:text-sm"
+          >
             See all
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </div>
       </CardHeader>
       <CardContent>
-  <div className="space-y-4">
+        <div className="space-y-4">
           <div>
             <p className="text-sm text-muted-foreground mb-1">Total Revenue</p>
-            <p className="text-3xl font-bold">{formatCurrency(totalRevenue)}</p>
+            <p className="text-2xl font-bold sm:text-3xl">{formatCurrency(totalRevenue)}</p>
           </div>
 
           <div className="space-y-2">
@@ -64,7 +68,10 @@ export function RevenueCard({ revenueData, totalRevenue }: RevenueCardProps) {
 
           <div className="space-y-2">
             {revenueData.map((item) => (
-              <div key={item.category} className="flex items-center justify-between rounded-lg border border-transparent px-2 py-1.5 transition-colors hover:border-border">
+              <div
+                key={item.category}
+                className="flex flex-col gap-2 rounded-lg border border-transparent px-2 py-1.5 transition-colors hover:border-border sm:flex-row sm:items-center sm:justify-between"
+              >
                 <div className="flex items-center gap-3">
                   <div
                     className="h-3 w-3 rounded-full"
@@ -79,7 +86,7 @@ export function RevenueCard({ revenueData, totalRevenue }: RevenueCardProps) {
                     </p>
                   </div>
                 </div>
-                <p className="text-sm font-semibold">{formatCurrency(item.value)}</p>
+                <p className="text-sm font-semibold sm:text-right">{formatCurrency(item.value)}</p>
               </div>
             ))}
           </div>
