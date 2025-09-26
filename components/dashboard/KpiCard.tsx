@@ -111,7 +111,7 @@ export function KPICard({
           ) : null}
         </div>
 
-        <div className="flex items-end justify-between gap-4">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-4 mb-2 sm:mb-0">
           <span className="text-3xl font-semibold text-card-foreground">
             {mergedValue}
           </span>
@@ -119,7 +119,7 @@ export function KPICard({
           {trend && trendDisplay ? (
             <div
               className={cn(  
-                "inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold whitespace-nowrap",
+                "inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold whitespace-nowrap self-start sm:self-auto",
                 trend.positive
                   ? "bg-emerald-50 text-emerald-600"
                   : "bg-rose-50 text-rose-600"

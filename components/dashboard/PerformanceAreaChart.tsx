@@ -144,7 +144,7 @@ export function PerformanceAreaChart({ data, chartType, onChartTypeChange }: Per
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
             {/* KPI Cards */}
-            <div className="grid gap-6 md:grid-cols-2 flex-1 lg:mr-50">
+            <div className="grid gap-6 md:grid-cols-2 flex-1">
               <KPICard
                 title="Total Amount"
                 value={mockKPIData.totalAmount}
@@ -185,7 +185,7 @@ export function PerformanceAreaChart({ data, chartType, onChartTypeChange }: Per
         </div>
       </CardHeader>
       <CardContent className="p-0">
-        <div className="p-6 pt-0">
+        <div className="px-2 pb-6 sm:px-6">
           {/* Combined Filter + Legend */}
           <div className="mb-4 space-y-2 text-sm">
             <div className="flex flex-wrap items-center gap-2">
@@ -215,7 +215,7 @@ export function PerformanceAreaChart({ data, chartType, onChartTypeChange }: Per
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               {chartType === 'line' ? (
-                <AreaChart data={data}>
+                <AreaChart data={data} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
                   <XAxis
                     dataKey="date"
@@ -284,7 +284,7 @@ export function PerformanceAreaChart({ data, chartType, onChartTypeChange }: Per
                   )}
                 </AreaChart>
               ) : (
-                <BarChart data={data}>
+                <BarChart data={data} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
                   <XAxis
                     dataKey="date"

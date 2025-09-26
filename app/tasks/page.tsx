@@ -70,7 +70,7 @@ export default function TasksPage() {
         />
         <button
           type="submit"
-          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition hover:bg-primary/90"
+          className="cursor-pointer rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition hover:bg-primary/90"
         >
           Add
         </button>
@@ -97,7 +97,7 @@ export default function TasksPage() {
                     type="checkbox"
                     checked={task.done}
                     readOnly
-                    className="size-4 rounded border-border"
+                    className="cursor-pointer size-4 rounded border-border"
                   />
                   <span className={task.done ? "text-muted-foreground line-through" : "text-foreground"}>
                     {task.title}
@@ -106,7 +106,7 @@ export default function TasksPage() {
                 <button
                   type="button"
                   onClick={() => deleteTask(task.id)}
-                  className="text-xs text-muted-foreground transition hover:text-destructive"
+                  className="cursor-pointer text-xs text-muted-foreground transition hover:text-destructive"
                 >
                   Delete
                 </button>
