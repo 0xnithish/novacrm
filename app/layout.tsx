@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
-import { AppSidebar } from "@/components/app-sidebar";
+import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
-import { LayoutHeader } from "@/components/layout-header";
+import { LayoutHeader } from "@/components/LayoutHeader";
 import { ThemeProvider } from "next-themes";
 import { DealDetailsProvider } from "@/hooks/useDealDetails";
 

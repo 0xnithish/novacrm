@@ -1,11 +1,11 @@
 "use client"
 
 import { useState, type ChangeEvent, type FormEvent } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { User, DollarSign, X, Plus } from "lucide-react"
+import { User, X, Plus } from "lucide-react"
 
 export default function ActiveDealsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -119,15 +119,15 @@ export default function ActiveDealsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Active Deals</h1>
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="space-y-1">
+          <h1 className="text-2xl font-bold">Active Deals ({activeDeals.length})</h1>
           <p className="text-muted-foreground">
             Manage and track all your active deals
           </p>
         </div>
         <Button
-          className="bg-gray-800 hover:bg-gray-900 text-white cursor-pointer"
+          className="w-full md:w-auto bg-gray-800 hover:bg-gray-900 text-white cursor-pointer"
           onClick={() => setIsModalOpen(true)}
         >
           <Plus className="h-4 w-4 mr-2" />
@@ -137,9 +137,6 @@ export default function ActiveDealsPage() {
 
       {/* Deals Table */}
       <Card>
-        <CardHeader>
-          <CardTitle>Active Deals ({activeDeals.length})</CardTitle>
-        </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
             <table className="w-full">

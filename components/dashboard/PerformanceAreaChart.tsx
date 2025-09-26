@@ -4,9 +4,11 @@ import { useState } from "react"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Toggle } from "@/components/ui/toggle"
 import { Button } from "@/components/ui/button"
-import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts"
+import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
+import type { TooltipProps } from "recharts"
+import type { ValueType, NameType } from "recharts/types/component/DefaultTooltipContent"
 import { PerformanceData } from "@/lib/data/mock-data"
-import { KPICard } from "./kpi-card"
+import { KPICard } from "./KpiCard"
 import {
   mockKPIData
 } from "@/lib/data/mock-data"
@@ -20,8 +22,8 @@ interface PerformanceAreaChartProps {
 type FilterType = 'all' | 'loanGenerated' | 'preapprovalLoan' | 'contacts' | 'inProcess' | 'loanClosed'
 
 const chartColors = {
-  loanGenerated: { area: '#8b5cf6', stroke: '#7c3aed' },
-  preapprovalLoan: { area: '#3b82f6', stroke: '#2563eb' },
+  // loanGenerated: { area: '#8b5cf6', stroke: '#7c3aed' },
+  // preapprovalLoan: { area: '#3b82f6', stroke: '#2563eb' },
   contacts: { area: '#10b981', stroke: '#059669' },
   inProcess: { area: '#f59e0b', stroke: '#d97706' },
   loanClosed: { area: '#ef4444', stroke: '#dc2626' }
@@ -29,8 +31,8 @@ const chartColors = {
 
 const filterOptions: { key: FilterType; label: string; color?: string }[] = [
   { key: 'all', label: 'All' },
-  { key: 'loanGenerated', label: 'Loan Generated', color: chartColors.loanGenerated.area },
-  { key: 'preapprovalLoan', label: 'Pre-approval Loan', color: chartColors.preapprovalLoan.area },
+  // { key: 'loanGenerated', label: 'Loan Generated', color: chartColors.loanGenerated.area },
+  // { key: 'preapprovalLoan', label: 'Pre-approval Loan', color: chartColors.preapprovalLoan.area },
   { key: 'contacts', label: 'Contacts', color: chartColors.contacts.area },
   { key: 'inProcess', label: 'In Process', color: chartColors.inProcess.area },
   { key: 'loanClosed', label: 'Loan Closed', color: chartColors.loanClosed.area }
@@ -85,36 +87,55 @@ export function PerformanceAreaChart({ data, chartType, onChartTypeChange }: Per
     return new Intl.NumberFormat('en-US').format(value)
   }
 
-  const CustomTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-background border border-border rounded-lg p-3 shadow-lg">
-          <p className="text-sm font-medium mb-2">{label}</p>
-          {payload.map((entry: any, index: number) => (
-            <div key={index} className="flex items-center gap-2 text-sm">
+  const CustomTooltip = ({ active, payload, label }: TooltipProps<ValueType, NameType>) => {
+    if (!active || !payload?.length || label == null) {
+      return null
+    }
+
+    return (
+      <div className="bg-background border border-border rounded-lg p-3 shadow-lg">
+        <p className="text-sm font-medium mb-2">{label}</p>
+        {payload.map((entry, index) => {
+          if (!entry || entry.dataKey == null) {
+            return null
+          }
+
+          const dataKey = String(entry.dataKey)
+          const value = typeof entry.value === 'number' ? entry.value : Number(entry.value)
+
+          if (Number.isNaN(value)) {
+            return null
+          }
+
+          const labelMap: Record<string, string> = {
+            loanGenerated: 'Loan Generated',
+            preapprovalLoan: 'Pre-approval Loan',
+            contacts: 'Contacts',
+            inProcess: 'In Process',
+            loanClosed: 'Loan Closed'
+          }
+
+          const formattedValue = ['contacts', 'inProcess', 'loanClosed'].includes(dataKey)
+            ? formatNumber(value)
+            : formatCurrency(value)
+
+          return (
+            <div key={`${dataKey}-${index}`} className="flex items-center gap-2 text-sm">
               <div
                 className="w-3 h-3 rounded-full"
                 style={{ backgroundColor: entry.color }}
               />
               <span className="text-muted-foreground">
-                {entry.dataKey === 'loanGenerated' && 'Loan Generated'}
-                {entry.dataKey === 'preapprovalLoan' && 'Pre-approval Loan'}
-                {entry.dataKey === 'contacts' && 'Contacts'}
-                {entry.dataKey === 'inProcess' && 'In Process'}
-                {entry.dataKey === 'loanClosed' && 'Loan Closed'}
+                {labelMap[dataKey] ?? dataKey}
               </span>
               <span className="font-medium ml-auto">
-                {entry.dataKey === 'contacts' || entry.dataKey === 'inProcess' || entry.dataKey === 'loanClosed'
-                  ? formatNumber(entry.value)
-                  : formatCurrency(entry.value)
-                }
+                {formattedValue}
               </span>
             </div>
-          ))}
-        </div>
-      )
-    }
-    return null
+          )
+        })}
+      </div>
+    )
   }
 
   return (
@@ -211,7 +232,7 @@ export function PerformanceAreaChart({ data, chartType, onChartTypeChange }: Per
                   <Tooltip content={<CustomTooltip />} />
 
                   {/* Conditional Area rendering based on filter */}
-                  {shouldRenderSeries('loanGenerated') && (
+                  {/*{shouldRenderSeries('loanGenerated') && (
                     <Area
                       type="monotone"
                       dataKey="loanGenerated"
@@ -230,7 +251,7 @@ export function PerformanceAreaChart({ data, chartType, onChartTypeChange }: Per
                       fill={chartColors.preapprovalLoan.area}
                       fillOpacity={0.6}
                     />
-                  )}
+                  )} */}
                   {shouldRenderSeries('contacts') && (
                     <Area
                       type="monotone"
@@ -280,12 +301,12 @@ export function PerformanceAreaChart({ data, chartType, onChartTypeChange }: Per
                   <Tooltip content={<CustomTooltip />} />
 
                   {/* Conditional Bar rendering based on filter */}
-                  {shouldRenderSeries('loanGenerated') && (
+                  {/* {shouldRenderSeries('loanGenerated') && (
                     <Bar dataKey="loanGenerated" fill={chartColors.loanGenerated.area} radius={[2, 2, 0, 0]} />
                   )}
                   {shouldRenderSeries('preapprovalLoan') && (
                     <Bar dataKey="preapprovalLoan" fill={chartColors.preapprovalLoan.area} radius={[2, 2, 0, 0]} />
-                  )}
+                  )} */}
                   {shouldRenderSeries('contacts') && (
                     <Bar dataKey="contacts" fill={chartColors.contacts.area} radius={[2, 2, 0, 0]} />
                   )}

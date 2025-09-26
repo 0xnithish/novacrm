@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { usePathname } from "next/navigation"
 
 import { useDealDetails } from "@/hooks/useDealDetails"
@@ -20,8 +21,6 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-  SidebarRail,
-  useSidebar,
 } from "@/components/ui/sidebar"
 import {
   DropdownMenu,
@@ -52,7 +51,6 @@ import {
 } from "lucide-react"
 
 export function AppSidebar() {
-  const { state } = useSidebar()
   const { selectedDeal, closeDealDetails } = useDealDetails()
   const pathname = usePathname()
   const isOnDealsRoute = pathname?.startsWith("/deals") ?? false
@@ -67,20 +65,15 @@ export function AppSidebar() {
       <SidebarHeader className=" border-sidebar-border">
         <div className="flex items-center justify-between p-2">
           <div className="flex items-center gap-2">
-            <img
+            <Image
               src="/logo.svg"
-              alt="Logo"
-              className="h-5 w-5 rounded-sm"
+              alt="Nova logo"
+              width={20}
+              height={20}
+              className="rounded-sm"
+              priority
             />
-            <span
-              className={`text-lg font-semibold transition-all duration-200 ${
-                state === "collapsed"
-                  ? "opacity-0 w-0 translate-x-2 overflow-hidden"
-                  : "opacity-100"
-              }`}
-            >
-              Nova
-            </span>
+            <span className="text-lg font-semibold">Nova</span>
           </div>
         </div>
       </SidebarHeader>
@@ -147,19 +140,19 @@ export function AppSidebar() {
 
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                    <Link href="/integration" className="flex items-center gap-2">
+                  <Link href="/integration" className="flex items-center gap-2">
                     <Plug className="h-4 w-4" />
                     <span>Integration</span>
-                    </Link>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                    <Link href="/tasks" className="flex items-center gap-2">
+                  <Link href="/tasks" className="flex items-center gap-2">
                     <CheckSquare className="h-4 w-4" />
                     <span>Tasks</span>
-                    </Link>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
@@ -278,27 +271,19 @@ export function AppSidebar() {
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuButton className="w-full p-0 py-6 cursor-pointer hover:bg-accent">
-                  <div className={`flex items-center w-full ${
-                    state === "collapsed" 
-                      ? "justify-center" 
-                      : "justify-start gap-2 px-2"
-                  }`}>
+                <SidebarMenuButton className="w-full cursor-pointer p-0 py-6 hover:bg-accent">
+                  <div className="flex w-full items-center justify-start gap-2 px-2">
                     <Avatar className="h-7 w-7">
                       <AvatarImage src="/placeholder-avatar.jpg" alt="User" />
                       <AvatarFallback>
                         <User2 className="h-4 w-4" />
                       </AvatarFallback>
                     </Avatar>
-                    {state !== "collapsed" && (
-                      <>
-                        <div className="flex flex-col items-start text-sm">
-                          <span className="font-medium">John Doe</span>
-                          <span className="text-xs text-muted-foreground">john@example.com</span>
-                        </div>
-                        <ChevronUp className="ml-auto h-4 w-4" />
-                      </>
-                    )}
+                    <div className="flex flex-col items-start text-sm">
+                      <span className="font-medium">John Doe</span>
+                      <span className="text-xs text-muted-foreground">john@example.com</span>
+                    </div>
+                    <ChevronUp className="ml-auto h-4 w-4" />
                   </div>
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
@@ -317,12 +302,11 @@ export function AppSidebar() {
                 <DropdownMenuItem className="cursor-pointer">
                   <span>Sign out</span>
                 </DropdownMenuItem>
-              </DropdownMenuContent>  
+              </DropdownMenuContent>
             </DropdownMenu>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
-      <SidebarRail />
     </Sidebar>
   )
 }

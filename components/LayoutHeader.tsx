@@ -1,7 +1,6 @@
 "use client"
 
 import { SidebarTrigger } from "@/components/ui/sidebar"
-import { useCurrentPage } from "@/hooks/use-current-page"
 import { Input } from "@/components/ui/input"
 import {
   DropdownMenu,
@@ -12,17 +11,15 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
-import { User, Settings, ChevronDown, Moon, Sun } from "lucide-react"
+import { User, Settings, Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 
 export function LayoutHeader() {
-  const { title } = useCurrentPage()
   const { theme, setTheme } = useTheme()
 
   return (
     <header className="flex items-center gap-3 border-b border-border bg-background/80 px-6 py-4 backdrop-blur">
-      <SidebarTrigger className="size-8" />
-      <h1 className="text-md font-semibold">{title}</h1>
+      <SidebarTrigger className="size-8 md:hidden" />
       <div className="relative flex-1 max-w-sm">
         <Input
           placeholder="Search..."

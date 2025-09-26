@@ -1,11 +1,11 @@
 "use client"
 
 import { useState, type ChangeEvent, type FormEvent } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { User, DollarSign, X, Plus } from "lucide-react"
+import { User, X, Plus } from "lucide-react"
 
 export default function ClosedDealsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -129,15 +129,15 @@ export default function ClosedDealsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Closed Deals</h1>
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="space-y-1">
+          <h1 className="text-2xl font-bold">Closed Deals  ({closedDeals.length})</h1>
           <p className="text-muted-foreground">
-            Review all your completed and closed deals
+            Review your completed closed deals
           </p>
         </div>
         <Button
-          className="bg-gray-800 hover:bg-gray-900 text-white cursor-pointer"
+          className="w-full md:w-auto bg-gray-800 hover:bg-gray-900 text-white cursor-pointer"
           onClick={() => setIsModalOpen(true)}
         >
           <Plus className="h-4 w-4 mr-2" />
@@ -147,9 +147,6 @@ export default function ClosedDealsPage() {
 
       {/* Closed Deals Table */}
       <Card>
-        <CardHeader>
-          <CardTitle>Closed Deals ({closedDeals.length})</CardTitle>
-        </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
             <table className="w-full">
@@ -160,7 +157,6 @@ export default function ClosedDealsPage() {
                   <th className="text-left p-3 font-medium">Phone</th>
                   <th className="text-left p-3 font-medium">Amount</th>
                   <th className="text-left p-3 font-medium">Title</th>
-                  <th className="text-left p-3 font-medium">Closed Date</th>
                   <th className="text-left p-3 font-medium">Actions</th>
                 </tr>
               </thead>
@@ -181,16 +177,13 @@ export default function ClosedDealsPage() {
                     </td>
                     <td className="p-3">
                       <div className="flex items-center gap-1">
-                        <DollarSign className="h-4 w-4 text-green-600" />
                         <span className="font-medium">{deal.amount}</span>
                       </div>
                     </td>
                     <td className="p-3 font-medium">
                       {deal.title}
                     </td>
-                    <td className="p-3 text-sm text-muted-foreground">
-                      {deal.closedDate}
-                    </td>
+                    
                     <td className="p-3">
                       <Button
                         size="sm"

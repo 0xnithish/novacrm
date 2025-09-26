@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState, ReactNode } from 'react'
+import { createContext, createElement, useContext, useState, ReactNode } from 'react'
 
 interface Deal {
   id: string
@@ -33,11 +33,7 @@ export function DealDetailsProvider({ children }: { children: ReactNode }) {
     closeDealDetails
   }
 
-  return (
-    <DealDetailsContext.Provider value={contextValue}>
-      {children}
-    </DealDetailsContext.Provider>
-  )
+  return createElement(DealDetailsContext.Provider, { value: contextValue }, children)
 }
 
 export function useDealDetails() {

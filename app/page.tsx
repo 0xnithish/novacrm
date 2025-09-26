@@ -1,10 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { KPICard } from "@/components/dashboard/kpi-card"
-import { PerformanceAreaChart } from "@/components/dashboard/performance-area-chart"
-import { LeadsTable } from "@/components/dashboard/leads-table"
-import { RevenueCard } from "@/components/dashboard/revenue-card"
+import { PerformanceAreaChart } from "@/components/dashboard/PerformanceAreaChart"
+import { LeadsTable } from "@/components/dashboard/LeadsTable"
+import { RevenueCard } from "@/components/dashboard/RevenueCard"
 import {
   mockLeads,
   mockPerformanceData,
@@ -19,7 +18,6 @@ export default function Home() {
     <div className="space-y-6">
       {/* Performance Section */}
       <div>
-        <h2 className="text-xl font-bold mb-6">Performance This Month</h2>
 
         {/* Performance Chart */}
         <PerformanceAreaChart
@@ -30,7 +28,7 @@ export default function Home() {
       </div>
 
       {/* Bottom Section */}
-      <div className="grid gap-6 lg:grid-cols-2">
+  <div className="grid gap-6 lg:grid-cols-[minmax(0,_1.7fr)_minmax(0,_1fr)]">
         {/* Recent Leads */}
         <LeadsTable
           leads={mockLeads}
