@@ -170,7 +170,6 @@ export default function ActiveDealsPage() {
                     </td>
                     <td className="p-3">
                       <div className="flex items-center gap-1">
-                        <DollarSign className="h-4 w-4 text-green-600" />
                         <span className="font-medium">{deal.amount}</span>
                       </div>
                     </td>

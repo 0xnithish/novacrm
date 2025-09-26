@@ -1,6 +1,11 @@
 "use client"
 
+import { useEffect, useState } from "react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+
 import { useDealDetails } from "@/hooks/useDealDetails"
+import { cn } from "@/lib/utils"
 import {
   Sidebar,
   SidebarContent,
@@ -49,6 +54,13 @@ import {
 export function AppSidebar() {
   const { state } = useSidebar()
   const { selectedDeal, closeDealDetails } = useDealDetails()
+  const pathname = usePathname()
+  const isOnDealsRoute = pathname?.startsWith("/deals") ?? false
+  const [isDealsOpen, setIsDealsOpen] = useState(isOnDealsRoute)
+
+  useEffect(() => {
+    setIsDealsOpen(isOnDealsRoute)
+  }, [isOnDealsRoute])
 
   return (
     <Sidebar collapsible="icon">
@@ -79,52 +91,75 @@ export function AppSidebar() {
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <a href="/" className="flex items-center gap-2">
+                  <Link href="/" className="flex items-center gap-2">
                     <LayoutDashboard className="h-4 w-4" />
                     <span>Overview</span>
-                  </a>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
               <SidebarMenuItem>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <SidebarMenuButton className="w-full justify-between">
-                      <div className="flex items-center gap-2">
-                        <Building className="h-4 w-4" />
-                        <span>Deals</span>
-                      </div>
-                      <ChevronDown className="h-4 w-4" />
-                    </SidebarMenuButton>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent side="right" align="start">
-                    <DropdownMenuItem>
-                      <CheckSquare className="mr-2 h-4 w-4" />
-                      <a href="/deals/active">Active Deals</a>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Settings className="mr-2 h-4 w-4" />
-                      <a href="/deals/closed">Closed Deals</a>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <SidebarMenuButton
+                  type="button"
+                  className="w-full justify-between"
+                  isActive={isDealsOpen}
+                  onClick={() => setIsDealsOpen((prev) => !prev)}
+                >
+                  <div className="flex items-center gap-2">
+                    <Building className="h-4 w-4" />
+                    <span>Deals</span>
+                  </div>
+                  <ChevronDown
+                    className={cn(
+                      "h-4 w-4 transition-transform duration-200",
+                      isDealsOpen ? "rotate-180" : "rotate-0"
+                    )}
+                  />
+                </SidebarMenuButton>
+
+                {isDealsOpen && (
+                  <SidebarMenuSub>
+                    <SidebarMenuSubItem>
+                      <SidebarMenuSubButton
+                        asChild
+                        isActive={pathname === "/deals/active"}
+                      >
+                        <Link href="/deals/active">
+                          <CheckSquare className="h-4 w-4" />
+                          <span>Active</span>
+                        </Link>
+                      </SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                    <SidebarMenuSubItem>
+                      <SidebarMenuSubButton
+                        asChild
+                        isActive={pathname === "/deals/closed"}
+                      >
+                        <Link href="/deals/closed">
+                          <Settings className="h-4 w-4" />
+                          <span>Closed</span>
+                        </Link>
+                      </SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                  </SidebarMenuSub>
+                )}
               </SidebarMenuItem>
 
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <a href="/integration" className="flex items-center gap-2">
+                    <Link href="/integration" className="flex items-center gap-2">
                     <Plug className="h-4 w-4" />
                     <span>Integration</span>
-                  </a>
+                    </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <a href="/tasks" className="flex items-center gap-2">
+                    <Link href="/tasks" className="flex items-center gap-2">
                     <CheckSquare className="h-4 w-4" />
                     <span>Tasks</span>
-                  </a>
+                    </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
@@ -220,19 +255,19 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <a href="/settings" className="flex items-center gap-2">
+              <Link href="/settings" className="flex items-center gap-2">
                 <Settings className="h-4 w-4" />
                 <span>Settings</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
 
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <a href="/support" className="flex items-center gap-2">
+              <Link href="/support" className="flex items-center gap-2">
                 <HelpCircle className="h-4 w-4" />
                 <span>Help & Support</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
 
