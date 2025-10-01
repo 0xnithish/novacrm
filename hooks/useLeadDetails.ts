@@ -1,37 +1,7 @@
 'use client'
 
 import { createContext, createElement, useContext, useState, ReactNode } from 'react'
-
-export interface Activity {
-  id: string
-  type: string
-  description: string
-  timestamp: string
-  status?: 'new' | 'in-progress' | 'completed'
-}
-
-export interface Note {
-  id: string
-  title: string
-  content: string
-  timestamp: string
-}
-
-export interface Lead {
-  id: string
-  title: string
-  clientName: string
-  email: string
-  phone: string
-  amount: string
-  leadOwner: string
-  location: string
-  referralPartner: string
-  annualIncome: string
-  progressPercentage: number
-  activities: Activity[]
-  notes: Note[]
-}
+import type { Activity, Note, Lead } from '@/types'
 
 interface LeadDetailsContextType {
   selectedLead: Lead | null

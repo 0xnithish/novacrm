@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { RevenueData } from "@/lib/data/mock-data"
+import type { RevenueData } from "@/types"
 import { ArrowRight } from "lucide-react"
 
 interface RevenueCardProps {

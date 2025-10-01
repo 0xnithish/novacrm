@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
 import type { TooltipProps } from "recharts"
 import type { ValueType, NameType } from "recharts/types/component/DefaultTooltipContent"
-import { PerformanceData } from "@/lib/data/mock-data"
+import type { PerformanceData } from "@/types"
 import { KPICard } from "./KpiCard"
 import {
   mockKPIData

@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
+import { useDemoAlert } from "@/components/ui/demo-alert"
 import { Separator } from "@/components/ui/separator"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import {
@@ -52,12 +53,24 @@ import {
 
 export function AppSidebar() {
   const { selectedDeal, closeDealDetails } = useDealDetails()
+  const { showAlert, DemoAlertComponent } = useDemoAlert()
   const pathname = usePathname()
   const isOnDealsRoute = pathname?.startsWith("/deals") ?? false
   const [isDealsOpen, setIsDealsOpen] = useState(isOnDealsRoute)
+  const [userName, setUserName] = useState("John Doe")
+  const [userEmail, setUserEmail] = useState("john@example.com")
 
   useEffect(() => {
     setIsDealsOpen(isOnDealsRoute)
+
+    // Load user data from localStorage
+    const savedProfile = localStorage.getItem('userProfile')
+    if (savedProfile) {
+      const parsedProfile = JSON.parse(savedProfile)
+      const fullName = `${parsedProfile.firstName} ${parsedProfile.lastName}`
+      setUserName(fullName)
+      setUserEmail(parsedProfile.email)
+    }
   }, [isOnDealsRoute])
 
   return (
@@ -73,7 +86,7 @@ export function AppSidebar() {
               className="rounded-sm"
               priority
             />
-            <span className="text-lg font-semibold">Nebula</span>
+            <span className="text-lg font-semibold">Nova</span>
           </div>
         </div>
       </SidebarHeader>
@@ -274,14 +287,14 @@ export function AppSidebar() {
                 <SidebarMenuButton className="w-full cursor-pointer p-0 py-6 hover:bg-accent">
                   <div className="flex w-full items-center justify-start gap-2 px-2">
                     <Avatar className="h-7 w-7">
-                      <AvatarImage src="/placeholder-avatar.jpg" alt="User" />
+                      <AvatarImage src="/user.png" alt="User" />
                       <AvatarFallback>
                         <User2 className="h-4 w-4" />
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col items-start text-sm">
-                      <span className="font-medium">John Doe</span>
-                      <span className="text-xs text-muted-foreground">john@example.com</span>
+                      <span className="font-medium">{userName}</span>
+                      <span className="text-xs text-muted-foreground">{userEmail}</span>
                     </div>
                     <ChevronUp className="ml-auto h-4 w-4" />
                   </div>
@@ -291,15 +304,22 @@ export function AppSidebar() {
                 side="top"
                 className="w-[--radix-popper-anchor-width] cursor-pointer"
               >
-                <DropdownMenuItem className="cursor-pointer">
-                  <User className="h-4 w-full justify-start" />
-                  <span>Account</span>
+                <DropdownMenuItem className="cursor-pointer" asChild>
+                  <Link href="/account">
+                    <User className="h-4 w-full justify-start" />
+                    <span>Account</span>
+                  </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer">
-                  <Settings className="h-4 w-full justify-start" />
-                  <span>Billing</span>
+                <DropdownMenuItem className="cursor-pointer" asChild>
+                  <Link href="/settings">
+                    <Settings className="h-4 w-full justify-start" />
+                    <span>Settings</span>
+                  </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer">
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={() => showAlert("Demo Project", "Authentication and database integration coming soon! This is a demo portfolio project showcasing modern web development capabilities.")}
+                >
                   <span>Sign out</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -307,6 +327,7 @@ export function AppSidebar() {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
+      <DemoAlertComponent />
     </Sidebar>
   )
 }

@@ -1,12 +1,7 @@
 'use client'
 
 import { useState } from "react"
-
-type Task = {
-  id: string
-  title: string
-  done: boolean
-}
+import type { Task } from '@/types'
 
 const starterTasks: Task[] = [
   { id: "1", title: "Follow up with new leads", done: false },

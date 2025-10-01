@@ -18,7 +18,6 @@ export default function Home() {
     <div className="space-y-6">
       {/* Performance Section */}
       <div>
-
         {/* Performance Chart */}
         <PerformanceAreaChart
           data={mockPerformanceData}

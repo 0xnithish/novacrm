@@ -1,35 +1,6 @@
-export interface Lead {
-  id: string
-  name: string
-  contact: string
-  email: string
-  status: 'in progress' | 'closed' | 'new' | 'qualified'
-  avatar?: string
-}
+import type { SimpleLead, PerformanceData, RevenueData, KPIData } from '@/types'
 
-export interface PerformanceData {
-  date: string
-  loanGenerated: number
-  preapprovalLoan: number
-  contacts: number
-  inProcess: number
-  loanClosed: number
-}
-
-export interface RevenueData {
-  category: string
-  value: number
-  color: string
-}
-
-export interface KPIData {
-  totalAmount: number
-  totalDeals: number
-  revenue: number
-  leadsCount: number
-}
-
-export const mockLeads: Lead[] = [
+export const mockLeads: SimpleLead[] = [
   {
     id: '1',
     name: 'Sarah Johnson',

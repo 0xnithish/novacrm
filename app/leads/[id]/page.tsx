@@ -7,7 +7,7 @@ import { NotesCard } from '@/components/lead-detail/NotesCard'
 import { ProgressCard } from '@/components/lead-detail/ProgressCard'
 import { ActivitiesCard } from '@/components/lead-detail/ActivitiesCard'
 import { findLeadById } from '@/lib/data/leads-data'
-import { Lead } from '@/hooks/useLeadDetails'
+import type { Lead } from '@/types'
 import {
   MessageCircle,
   Mail,

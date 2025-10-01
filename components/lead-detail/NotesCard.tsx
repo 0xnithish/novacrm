@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Plus, Clock } from 'lucide-react'
-import { Note } from '@/hooks/useLeadDetails'
+import type { Note } from '@/types'
 
 interface NotesCardProps {
   notes: Note[]

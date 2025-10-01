@@ -1,4 +1,4 @@
-import { Lead } from '@/hooks/useLeadDetails'
+import type { Lead } from '@/types'
 
 // Mock data for all active deals
 export const mockActiveDeals: Lead[] = [

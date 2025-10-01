@@ -3,15 +3,15 @@ import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { Lead } from "@/lib/data/mock-data"
+import type { SimpleLead } from "@/types"
 
 interface LeadsTableProps {
-  leads: Lead[]
+  leads: SimpleLead[]
   leadsCount: number
 }
 
 export function LeadsTable({ leads, leadsCount }: LeadsTableProps) {
-  const getStatusColor = (status: Lead['status']) => {
+  const getStatusColor = (status: SimpleLead['status']) => {
     switch (status) {
       case 'in progress':
         return 'bg-green-100 text-green-800 hover:bg-green-100'
@@ -35,10 +35,10 @@ export function LeadsTable({ leads, leadsCount }: LeadsTableProps) {
       .slice(0, 2)
   }
 
-  const formatStatus = (status: Lead['status']) =>
+  const formatStatus = (status: SimpleLead['status']) =>
     status
       .split(' ')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ')
 
   const activityLabels = [

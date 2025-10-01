@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { ExternalLink, Clock, CheckCircle, AlertCircle, Circle } from 'lucide-react'
-import { Activity } from '@/hooks/useLeadDetails'
+import type { Activity } from '@/types'
 
 interface ActivitiesCardProps {
   activities: Activity[]
