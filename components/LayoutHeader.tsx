@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
-import { HelpCircle, Search } from "lucide-react"
+import { HelpCircle, Search, Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Tooltip,
@@ -14,9 +14,13 @@ import { useDemoAlert } from "@/components/ui/demo-alert"
 import { SearchDialog } from "@/components/SearchDialog"
 import { ThemeToggle } from "@/components/ThemeToggle"
 import { UserMenu } from "@/components/UserMenu"
+import { useSidebarToggle } from "@/hooks/use-sidebar-toggle"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 function LayoutHeaderContent() {
   const { DemoAlertComponent } = useDemoAlert()
+  const { setMobileOpen } = useSidebarToggle()
+  const isMobile = useIsMobile()
   const [mounted, setMounted] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const pathname = usePathname()
@@ -127,13 +131,25 @@ function LayoutHeaderContent() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 flex items-center gap-4 border-b border-border bg-background px-6 py-4">
-        <div className="flex items-center gap-2">
-          <h1 className="text-base font-semibold">{pageName}</h1>
+      <header className="sticky top-0 z-50 flex items-center gap-2 md:gap-4 border-b border-border bg-background px-4 md:px-6 py-3 md:py-4 max-w-full overflow-x-hidden">
+        {/* Mobile menu button */}
+        {isMobile && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setMobileOpen(true)}
+            className="h-8 w-8 p-0 md:hidden flex-shrink-0"
+          >
+            <Menu className="h-5 w-5" />
+          </Button>
+        )}
+        
+        <div className="flex items-center gap-2 min-w-0">
+          <h1 className="text-sm md:text-base font-semibold truncate">{pageName}</h1>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <HelpCircle className="h-4 w-4 text-muted-foreground cursor-pointer" />
+                <HelpCircle className="h-4 w-4 text-muted-foreground cursor-pointer flex-shrink-0" />
               </TooltipTrigger>
               <TooltipContent className="max-w-xs">
                 <p>{pageDescription}</p>
@@ -142,15 +158,15 @@ function LayoutHeaderContent() {
           </TooltipProvider>
         </div>
 
-        {/* Search Bar */}
-        <div className="flex-1 flex justify-center">
+        {/* Search Bar - Desktop only */}
+        <div className="flex-1 hidden md:flex justify-center">
           <div className="w-full max-w-md">
             <Button
               variant="outline"
               onClick={() => setSearchOpen(true)}
-              className="w-full justify-start text-muted-foreground font-normal"
+              className="w-full justify-start text-muted-foreground font-normal text-sm"
             >
-              <Search className="h-4 w-4 mr-2" />
+              <Search className="h-4 w-4 mr-2 flex-shrink-0" />
               <span>Search leads...</span>
               <kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
                 <span className="text-xs">⌘</span>K
@@ -159,8 +175,23 @@ function LayoutHeaderContent() {
           </div>
         </div>
 
+        {/* Mobile: Spacer */}
+        <div className="flex-1 md:hidden"></div>
+
+        {/* Actions */}
         <div className="flex items-center gap-2 flex-shrink-0">
-          <ThemeToggle />
+          {/* Mobile: Search Icon */}
+          {isMobile && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setSearchOpen(true)}
+              className="h-8 w-8 p-0"
+            >
+              <Search className="h-4 w-4" />
+            </Button>
+          )}
+          {mounted && <ThemeToggle />}
           <UserMenu />
         </div>
       </header>

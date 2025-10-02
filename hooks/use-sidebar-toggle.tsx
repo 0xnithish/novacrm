@@ -4,21 +4,24 @@ import { createContext, useContext, useState, useCallback, ReactNode } from "rea
 
 type SidebarToggleContextType = {
   isCollapsed: boolean
+  isMobileOpen: boolean
   toggleSidebar: () => void
   setIsCollapsed: (collapsed: boolean) => void
+  setMobileOpen: (open: boolean) => void
 }
 
 const SidebarToggleContext = createContext<SidebarToggleContextType | undefined>(undefined)
 
 export function SidebarToggleProvider({ children }: { children: ReactNode }) {
   const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isMobileOpen, setMobileOpen] = useState(false)
 
   const toggleSidebar = useCallback(() => {
     setIsCollapsed(prev => !prev)
   }, [])
 
   return (
-    <SidebarToggleContext.Provider value={{ isCollapsed, toggleSidebar, setIsCollapsed }}>
+    <SidebarToggleContext.Provider value={{ isCollapsed, isMobileOpen, toggleSidebar, setIsCollapsed, setMobileOpen }}>
       {children}
     </SidebarToggleContext.Provider>
   )

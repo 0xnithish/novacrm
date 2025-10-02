@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation"
 
 import { useDealDetails } from "@/hooks/useDealDetails"
 import { useSidebarToggle } from "@/hooks/use-sidebar-toggle"
+import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import {
   DropdownMenu,
@@ -27,7 +28,6 @@ import {
   Settings,
   HelpCircle,
   ChevronDown,
-  ChevronUp,
   User,
   User2,
   X,
@@ -40,7 +40,8 @@ import {
 
 export function AppSidebar() {
   const { selectedDeal, closeDealDetails } = useDealDetails()
-  const { isCollapsed, toggleSidebar } = useSidebarToggle()
+  const { isCollapsed, isMobileOpen, toggleSidebar, setMobileOpen } = useSidebarToggle()
+  const isMobile = useIsMobile()
   const { showAlert, DemoAlertComponent } = useDemoAlert()
   const pathname = usePathname()
   const isOnDealsRoute = pathname?.startsWith("/deals") ?? false
@@ -70,11 +71,22 @@ export function AppSidebar() {
     }
   }, [isOnDealsRoute])
 
+  // Close mobile sidebar when clicking a link
+  const handleLinkClick = () => {
+    if (isMobile) {
+      setMobileOpen(false)
+    }
+  }
+
   return (
     <div
       className={cn(
         "fixed left-0 top-0 h-screen bg-sidebar border-r border-sidebar-border transition-all duration-300 ease-in-out z-20 flex flex-col",
-        isCollapsed ? "w-16" : "w-50"
+        // Desktop behavior
+        !isMobile && (isCollapsed ? "w-16" : "w-50"),
+        // Mobile behavior
+        isMobile && "w-64",
+        isMobile && (isMobileOpen ? "translate-x-0" : "-translate-x-full")
       )}
     >
       {/* Header */}
@@ -125,7 +137,7 @@ export function AppSidebar() {
           isCollapsed ? "p-2" : "p-4"
         )}>
           {/* Overview */}
-          <Link href="/">
+          <Link href="/" onClick={handleLinkClick}>
             <Button
               variant={pathname === "/" ? "secondary" : "ghost"}
               className={cn(
@@ -167,7 +179,7 @@ export function AppSidebar() {
 
             {!isCollapsed && isDealsOpen && (
               <div className="ml-4 mt-2 space-y-1">
-                <Link href="/deals/active">
+                <Link href="/deals/active" onClick={handleLinkClick}>
                   <Button
                     variant={pathname === "/deals/active" ? "secondary" : "ghost"}
                     size="sm"
@@ -177,7 +189,7 @@ export function AppSidebar() {
                     <span>Active</span>
                   </Button>
                 </Link>
-                <Link href="/deals/closed">
+                <Link href="/deals/closed" onClick={handleLinkClick}>
                   <Button
                     variant={pathname === "/deals/closed" ? "secondary" : "ghost"}
                     size="sm"
@@ -192,7 +204,7 @@ export function AppSidebar() {
           </div>
 
           {/* Integration */}
-          <Link href="/integration">
+          <Link href="/integration" onClick={handleLinkClick}>
             <Button
               variant={pathname === "/integration" ? "secondary" : "ghost"}
               className={cn(
@@ -206,7 +218,7 @@ export function AppSidebar() {
           </Link>
 
           {/* Tasks */}
-          <Link href="/tasks">
+          <Link href="/tasks" onClick={handleLinkClick}>
             <Button
               variant={pathname === "/tasks" ? "secondary" : "ghost"}
               className={cn(
@@ -313,7 +325,7 @@ export function AppSidebar() {
         isCollapsed ? "p-2" : "p-4"
       )}>
         {/* Support */}
-        <Link href="/support">
+        <Link href="/support" onClick={handleLinkClick}>
           <Button
             variant="ghost"
             className={cn(

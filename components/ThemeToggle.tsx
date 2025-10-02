@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
-import { Switch } from "@/components/ui/switch"
+import { Button } from "@/components/ui/button"
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme()
@@ -16,23 +16,24 @@ export function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <div className="flex items-center gap-2">
+      <Button variant="ghost" size="sm" className="h-8 w-8 p-0" disabled>
         <Sun className="h-4 w-4" />
-        <div className="w-11 h-6 rounded-full bg-input" />
-        <Moon className="h-4 w-4" />
-      </div>
+      </Button>
     )
   }
 
   return (
-    <div className="flex items-center gap-2">
-      <Sun className="h-4 w-4" />
-      <Switch
-        checked={theme === "dark"}
-        onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
-        className="cursor-pointer"
-      />
-      <Moon className="h-4 w-4" />
-    </div>
+    <Button
+      variant="ghost"
+      size="sm"
+      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      className="h-8 w-8 p-0"
+    >
+      {theme === "dark" ? (
+        <Sun className="h-4 w-4" />
+      ) : (
+        <Moon className="h-4 w-4" />
+      )}
+    </Button>
   )
 }
