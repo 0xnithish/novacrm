@@ -3,8 +3,12 @@
 import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { CheckCircle, Clock, TrendingUp } from "lucide-react"
+import { useDeals } from "@/hooks/useDeals"
 
 export default function DealsPage() {
+  const { activeDeals, closedDeals } = useDeals()
+  const totalDeals = activeDeals.length + closedDeals.length
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -24,9 +28,9 @@ export default function DealsPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Total Deals</p>
-                <p className="text-2xl font-bold">20</p>
+                <p className="text-2xl font-bold">{totalDeals}</p>
               </div>
-              <TrendingUp className="h-8 w-8 text-blue-500" />
+              <TrendingUp className="h-8 w-8 text-primary" />
             </div>
           </CardContent>
         </Card>
@@ -36,9 +40,9 @@ export default function DealsPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Active Deals</p>
-                <p className="text-2xl font-bold">10</p>
+                <p className="text-2xl font-bold">{activeDeals.length}</p>
               </div>
-              <Clock className="h-8 w-8 text-orange-500" />
+              <Clock className="h-8 w-8 text-orange-500 dark:text-orange-400" />
             </div>
           </CardContent>
         </Card>
@@ -48,9 +52,9 @@ export default function DealsPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Closed Deals</p>
-                <p className="text-2xl font-bold">10</p>
+                <p className="text-2xl font-bold">{closedDeals.length}</p>
               </div>
-              <CheckCircle className="h-8 w-8 text-green-500" />
+              <CheckCircle className="h-8 w-8 text-green-600 dark:text-green-400" />
             </div>
           </CardContent>
         </Card>
@@ -62,7 +66,7 @@ export default function DealsPage() {
           <Link href="/deals/active">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Clock className="h-5 w-5 text-orange-500" />
+                <Clock className="h-5 w-5 text-orange-500 dark:text-orange-400" />
                 Active Deals
               </CardTitle>
             </CardHeader>
@@ -71,8 +75,8 @@ export default function DealsPage() {
                 View and manage all your active deals currently in progress
               </p>
               <div className="flex items-center justify-between">
-                <span className="text-2xl font-bold">10</span>
-                <span className="text-sm text-orange-600">View Active Deals →</span>
+                <span className="text-2xl font-bold">{activeDeals.length}</span>
+                <span className="text-sm text-orange-600 dark:text-orange-400">View Active Deals →</span>
               </div>
             </CardContent>
           </Link>
@@ -82,7 +86,7 @@ export default function DealsPage() {
           <Link href="/deals/closed">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <CheckCircle className="h-5 w-5 text-green-500" />
+                <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
                 Closed Deals
               </CardTitle>
             </CardHeader>
@@ -91,8 +95,8 @@ export default function DealsPage() {
                 Review your completed and closed deals
               </p>
               <div className="flex items-center justify-between">
-                <span className="text-2xl font-bold">10</span>
-                <span className="text-sm text-green-600">View Closed Deals →</span>
+                <span className="text-2xl font-bold">{closedDeals.length}</span>
+                <span className="text-sm text-green-600 dark:text-green-400">View Closed Deals →</span>
               </div>
             </CardContent>
           </Link>

@@ -5,286 +5,23 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { User, X, Plus } from "lucide-react"
+import { User, X, Plus, Trash2 } from "lucide-react"
 import { useLeadDetails } from "@/hooks/useLeadDetails"
+import { useDeals } from "@/hooks/useDeals"
 import { LeadDetailPanel } from "@/components/lead-detail/LeadDetailPanel"
 
 export default function ClosedDealsPage() {
   const { openLeadDetails } = useLeadDetails()
+  const { closedDeals, addDeal, deleteDeal, isLoaded } = useDeals()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [formData, setFormData] = useState({
     clientName: '',
     email: '',
     phone: '',
     amount: '',
-    title: ''
+    title: '',
+    closedDate: ''
   })
-
-  // Mock closed deals data
-  const closedDeals = [
-    {
-      id: "101",
-      title: "Residential Mortgage",
-      clientName: "John Anderson",
-      email: "john.anderson@email.com",
-      phone: "+1 (555) 111-2222",
-      amount: "$350,000",
-      closedDate: "2024-09-15",
-      leadOwner: "Mike Wilson",
-      location: "Los Angeles, CA",
-      referralPartner: "Sunset Realty",
-      annualIncome: "$95,000",
-      progressPercentage: 100,
-      activities: [
-        {
-          id: "1",
-          type: "Call",
-          description: "Initial mortgage consultation",
-          timestamp: "2024-09-10T14:30:00Z",
-          status: "completed" as const
-        },
-        {
-          id: "2",
-          type: "Document",
-          description: "Application submitted and approved",
-          timestamp: "2024-09-12T11:15:00Z",
-          status: "completed" as const
-        },
-        {
-          id: "3",
-          type: "Meeting",
-          description: "Closing documents signed",
-          timestamp: "2024-09-15T16:00:00Z",
-          status: "completed" as const
-        }
-      ],
-      notes: [
-        {
-          id: "1",
-          title: "Deal Closed Successfully",
-          content: "Great client, smooth process. Deal closed on time with all requirements met.",
-          timestamp: "2024-09-15T17:00:00Z"
-        }
-      ]
-    },
-    {
-      id: "102",
-      title: "Auto Loan",
-      clientName: "Maria Garcia",
-      email: "maria.garcia@email.com",
-      phone: "+1 (555) 222-3333",
-      amount: "$25,000",
-      closedDate: "2024-09-10",
-      leadOwner: "AutoFin Direct",
-      location: "Los Angeles, CA",
-      referralPartner: "CarMax",
-      annualIncome: "$65,000",
-      progressPercentage: 100,
-      activities: [
-        {
-          id: "1",
-          type: "Call",
-          description: "Auto loan application processed",
-          timestamp: "2024-09-08T10:00:00Z",
-          status: "completed" as const
-        }
-      ],
-      notes: []
-    },
-    {
-      id: "103",
-      title: "Business Equipment",
-      clientName: "Robert Chen",
-      email: "robert.chen@email.com",
-      phone: "+1 (555) 333-4444",
-      amount: "$75,000",
-      closedDate: "2024-09-08",
-      leadOwner: "EquipFin Solutions",
-      location: "San Jose, CA",
-      referralPartner: "TechSupply Co",
-      annualIncome: "$95,000",
-      progressPercentage: 100,
-      activities: [
-        {
-          id: "1",
-          type: "Meeting",
-          description: "Equipment financing approved",
-          timestamp: "2024-09-05T14:00:00Z",
-          status: "completed" as const
-        }
-      ],
-      notes: []
-    },
-    {
-      id: "104",
-      title: "Home Equity Line",
-      clientName: "Jennifer Lopez",
-      email: "jennifer.lopez@email.com",
-      phone: "+1 (555) 444-5555",
-      amount: "$120,000",
-      closedDate: "2024-09-05",
-      leadOwner: "HomeEquity Plus",
-      location: "Miami, FL",
-      referralPartner: "RealtyMax",
-      annualIncome: "$130,000",
-      progressPercentage: 100,
-      activities: [
-        {
-          id: "1",
-          type: "Call",
-          description: "Home equity line processed",
-          timestamp: "2024-09-01T11:00:00Z",
-          status: "completed" as const
-        }
-      ],
-      notes: []
-    },
-    {
-      id: "105",
-      title: "Commercial Property",
-      clientName: "Michael Thompson",
-      email: "michael.thompson@email.com",
-      phone: "+1 (555) 555-6666",
-      amount: "$850,000",
-      closedDate: "2024-09-01",
-      leadOwner: "CommReal Estate",
-      location: "Dallas, TX",
-      referralPartner: "Business Properties",
-      annualIncome: "$220,000",
-      progressPercentage: 100,
-      activities: [
-        {
-          id: "1",
-          type: "Meeting",
-          description: "Commercial property acquisition completed",
-          timestamp: "2024-08-28T09:00:00Z",
-          status: "completed" as const
-        }
-      ],
-      notes: []
-    },
-    {
-      id: "106",
-      title: "Personal Loan",
-      clientName: "Sarah Williams",
-      email: "sarah.williams@email.com",
-      phone: "+1 (555) 666-7777",
-      amount: "$15,000",
-      closedDate: "2024-08-28",
-      leadOwner: "Personal Loan Co",
-      location: "Atlanta, GA",
-      referralPartner: "Credit Union",
-      annualIncome: "$55,000",
-      progressPercentage: 100,
-      activities: [
-        {
-          id: "1",
-          type: "Call",
-          description: "Personal loan approved and disbursed",
-          timestamp: "2024-08-25T13:00:00Z",
-          status: "completed" as const
-        }
-      ],
-      notes: []
-    },
-    {
-      id: "107",
-      title: "Construction Financing",
-      clientName: "David Martinez",
-      email: "david.martinez@email.com",
-      phone: "+1 (555) 777-8888",
-      amount: "$450,000",
-      closedDate: "2024-08-25",
-      leadOwner: "BuildFinance",
-      location: "Phoenix, AZ",
-      referralPartner: "ConstructCorp",
-      annualIncome: "$140,000",
-      progressPercentage: 100,
-      activities: [
-        {
-          id: "1",
-          type: "Meeting",
-          description: "Construction project funding completed",
-          timestamp: "2024-08-20T10:00:00Z",
-          status: "completed" as const
-        }
-      ],
-      notes: []
-    },
-    {
-      id: "108",
-      title: "Investment Property",
-      clientName: "Lisa Brown",
-      email: "lisa.brown@email.com",
-      phone: "+1 (555) 888-9999",
-      amount: "$625,000",
-      closedDate: "2024-08-20",
-      leadOwner: "InvestRealty",
-      location: "Las Vegas, NV",
-      referralPartner: "Property Investors",
-      annualIncome: "$180,000",
-      progressPercentage: 100,
-      activities: [
-        {
-          id: "1",
-          type: "Call",
-          description: "Investment property purchase completed",
-          timestamp: "2024-08-15T14:00:00Z",
-          status: "completed" as const
-        }
-      ],
-      notes: []
-    },
-    {
-      id: "109",
-      title: "Small Business Loan",
-      clientName: "James Wilson",
-      email: "james.wilson@email.com",
-      phone: "+1 (555) 999-0000",
-      amount: "$95,000",
-      closedDate: "2024-08-15",
-      leadOwner: "BizLoan Express",
-      location: "Denver, CO",
-      referralPartner: "Small Business Assoc",
-      annualIncome: "$75,000",
-      progressPercentage: 100,
-      activities: [
-        {
-          id: "1",
-          type: "Meeting",
-          description: "Small business loan successfully processed",
-          timestamp: "2024-08-10T11:00:00Z",
-          status: "completed" as const
-        }
-      ],
-      notes: []
-    },
-    {
-      id: "110",
-      title: "Medical Equipment",
-      clientName: "Patricia Davis",
-      email: "patricia.davis@email.com",
-      phone: "+1 (555) 000-1111",
-      amount: "$180,000",
-      closedDate: "2024-08-10",
-      leadOwner: "MedEquip Finance",
-      location: "Boston, MA",
-      referralPartner: "Medical Suppliers",
-      annualIncome: "$120,000",
-      progressPercentage: 100,
-      activities: [
-        {
-          id: "1",
-          type: "Call",
-          description: "Medical equipment financing completed",
-          timestamp: "2024-08-05T15:00:00Z",
-          status: "completed" as const
-        }
-      ],
-      notes: []
-    }
-  ]
-
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
@@ -294,10 +31,22 @@ export default function ClosedDealsPage() {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
-    // Here you would typically send the data to your API
-    console.log('New closed deal:', formData)
+    
+    // Add the new closed deal to localStorage
+    addDeal({
+      ...formData,
+      status: 'closed',
+      progressPercentage: 100,
+      activities: [],
+      notes: []
+    })
+    
     setIsModalOpen(false)
-    setFormData({ clientName: '', email: '', phone: '', amount: '', title: '' })
+    setFormData({ clientName: '', email: '', phone: '', amount: '', title: '', closedDate: '' })
+  }
+
+  if (!isLoaded) {
+    return <div className="space-y-6">Loading...</div>
   }
 
   return (
@@ -359,13 +108,35 @@ export default function ClosedDealsPage() {
                     </td>
                     
                     <td className="p-3">
-                      <Button
-                        size="sm"
-                        className="bg-[#0a8126] hover:bg-[#0a8126]/90 text-white"
-                        onClick={() => openLeadDetails(deal)}
-                      >
-                        View Details
-                      </Button>
+                      <div className="flex items-center gap-2">
+                        <Button
+                          size="sm"
+                          className="bg-[#0a8126] hover:bg-[#0a8126]/90 text-white"
+                          onClick={() => openLeadDetails({
+                            ...deal,
+                            leadOwner: deal.leadOwner || 'N/A',
+                            location: deal.location || 'N/A',
+                            referralPartner: deal.referralPartner || 'N/A',
+                            annualIncome: deal.annualIncome || 'N/A',
+                            progressPercentage: deal.progressPercentage || 100,
+                            activities: deal.activities || [],
+                            notes: deal.notes || []
+                          })}
+                        >
+                          View Details
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => {
+                            if (confirm(`Are you sure you want to delete the deal "${deal.title}" for ${deal.clientName}?`)) {
+                              deleteDeal(deal.id)
+                            }
+                          }}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -445,6 +216,18 @@ export default function ClosedDealsPage() {
                   value={formData.amount}
                   onChange={handleInputChange}
                   placeholder="$0"
+                  required
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="closedDate" className="my-2">Closed Date</Label>
+                <Input
+                  id="closedDate"
+                  name="closedDate"
+                  type="date"
+                  value={formData.closedDate}
+                  onChange={handleInputChange}
                   required
                 />
               </div>

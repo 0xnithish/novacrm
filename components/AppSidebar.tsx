@@ -105,50 +105,56 @@ export function AppSidebar() {
               </SidebarMenuItem>
 
               <SidebarMenuItem>
-                <SidebarMenuButton
-                  type="button"
-                  className="w-full justify-between"
-                  isActive={isDealsOpen}
-                  onClick={() => setIsDealsOpen((prev) => !prev)}
-                >
-                  <div className="flex items-center gap-2 cursor-pointer">
-                    <Building className="h-4 w-4" />
-                    <span>Deals</span>
+                <div className="flex flex-col">
+                  <div className="flex items-center">
+                    <SidebarMenuButton asChild className="flex-1">
+                      <Link href="/deals" className="flex items-center gap-2">
+                        <Building className="h-4 w-4" />
+                        <span>Deals</span>
+                      </Link>
+                    </SidebarMenuButton>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 w-8 p-0 hover:bg-accent"
+                      onClick={() => setIsDealsOpen((prev) => !prev)}
+                    >
+                      <ChevronDown
+                        className={cn(
+                          "h-4 w-4 transition-transform duration-200",
+                          isDealsOpen ? "rotate-180" : "rotate-0"
+                        )}
+                      />
+                    </Button>
                   </div>
-                  <ChevronDown
-                    className={cn(
-                      "h-4 w-4 transition-transform duration-200",
-                      isDealsOpen ? "rotate-180" : "rotate-0"
-                    )}
-                  />
-                </SidebarMenuButton>
 
-                {isDealsOpen && (
-                  <SidebarMenuSub>
-                    <SidebarMenuSubItem>
-                      <SidebarMenuSubButton
-                        asChild
-                        isActive={pathname === "/deals/active"}
-                      >
-                        <Link href="/deals/active">
-                          <CheckSquare className="h-4 w-4" />
-                          <span>Active</span>
-                        </Link>
-                      </SidebarMenuSubButton>
-                    </SidebarMenuSubItem>
-                    <SidebarMenuSubItem>
-                      <SidebarMenuSubButton
-                        asChild
-                        isActive={pathname === "/deals/closed"}
-                      >
-                        <Link href="/deals/closed">
-                          <Settings className="h-4 w-4" />
-                          <span>Closed</span>
-                        </Link>
-                      </SidebarMenuSubButton>
-                    </SidebarMenuSubItem>
-                  </SidebarMenuSub>
-                )}
+                  {isDealsOpen && (
+                    <SidebarMenuSub>
+                      <SidebarMenuSubItem>
+                        <SidebarMenuSubButton
+                          asChild
+                          isActive={pathname === "/deals/active"}
+                        >
+                          <Link href="/deals/active">
+                            <CheckSquare className="h-4 w-4" />
+                            <span>Active</span>
+                          </Link>
+                        </SidebarMenuSubButton>
+                      </SidebarMenuSubItem>
+                      <SidebarMenuSubItem>
+                        <SidebarMenuSubButton
+                          asChild
+                          isActive={pathname === "/deals/closed"}
+                        >
+                          <Link href="/deals/closed">
+                            <Settings className="h-4 w-4" />
+                            <span>Closed</span>
+                          </Link>
+                        </SidebarMenuSubButton>
+                      </SidebarMenuSubItem>
+                    </SidebarMenuSub>
+                  )}
+                </div>
               </SidebarMenuItem>
 
               <SidebarMenuItem>
