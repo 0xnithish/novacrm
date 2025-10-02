@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
-import { HelpCircle, Search, Menu } from "lucide-react"
+import { HelpCircle, Search, Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Tooltip,
@@ -18,11 +18,12 @@ import { useSidebarToggle } from "@/hooks/use-sidebar-toggle"
 import { useIsMobile } from "@/hooks/use-mobile"
 
 function LayoutHeaderContent() {
-  const { DemoAlertComponent } = useDemoAlert()
-  const { setMobileOpen } = useSidebarToggle()
+  const { showAlert, DemoAlertComponent } = useDemoAlert()
+  const { isMobileOpen, setMobileOpen } = useSidebarToggle()
   const isMobile = useIsMobile()
   const [mounted, setMounted] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
+  const [helpOpen, setHelpOpen] = useState(false)
   const pathname = usePathname()
 
   useEffect(() => {
@@ -123,7 +124,7 @@ function LayoutHeaderContent() {
 
         <div className="flex items-center gap-2 flex-shrink-0">
           <ThemeToggle />
-          <UserMenu />
+          <UserMenu onSignOutClick={() => showAlert("Hey There", "Authentication and database integration coming in future releases of this project!")} />
         </div>
       </header>
     )
@@ -137,25 +138,38 @@ function LayoutHeaderContent() {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => setMobileOpen(true)}
+            onClick={() => setMobileOpen(!isMobileOpen)}
             className="h-8 w-8 p-0 md:hidden flex-shrink-0"
           >
-            <Menu className="h-5 w-5" />
+            {isMobileOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <Menu className="h-5 w-5" />
+            )}
           </Button>
         )}
         
         <div className="flex items-center gap-2 min-w-0">
           <h1 className="text-sm md:text-base font-semibold truncate">{pageName}</h1>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <HelpCircle className="h-4 w-4 text-muted-foreground cursor-pointer flex-shrink-0" />
-              </TooltipTrigger>
-              <TooltipContent className="max-w-xs">
-                <p>{pageDescription}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          {/* Mobile: Click to open dialog */}
+          {isMobile ? (
+            <HelpCircle 
+              className="h-4 w-4 text-muted-foreground cursor-pointer flex-shrink-0" 
+              onClick={() => setHelpOpen(true)}
+            />
+          ) : (
+            /* Desktop: Hover tooltip */
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <HelpCircle className="h-4 w-4 text-muted-foreground cursor-pointer flex-shrink-0" />
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p>{pageDescription}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
         </div>
 
         {/* Search Bar - Desktop only */}
@@ -192,11 +206,37 @@ function LayoutHeaderContent() {
             </Button>
           )}
           {mounted && <ThemeToggle />}
-          <UserMenu />
+          <UserMenu onSignOutClick={() => showAlert("Hey There", "Authentication and database integration coming in future releases of this project!")} />
         </div>
       </header>
       <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
       <DemoAlertComponent />
+      
+      {/* Mobile help dialog */}
+      {isMobile && helpOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80">
+          <div className="bg-background rounded-lg p-6 max-w-sm w-full shadow-lg">
+            <div className="flex items-start justify-between mb-4">
+              <h3 className="font-semibold text-lg">{pageName}</h3>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setHelpOpen(false)}
+                className="h-6 w-6 p-0 -mt-1 -mr-1"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+            <p className="text-sm text-muted-foreground">{pageDescription}</p>
+            <Button 
+              onClick={() => setHelpOpen(false)} 
+              className="w-full mt-4"
+            >
+              Got it
+            </Button>
+          </div>
+        </div>
+      )}
     </>
   )
 }

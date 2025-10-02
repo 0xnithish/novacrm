@@ -10,11 +10,12 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
-import { useDemoAlert } from "@/components/ui/demo-alert"
 
-export function UserMenu() {
-  const { showAlert } = useDemoAlert()
+interface UserMenuProps {
+  onSignOutClick?: () => void
+}
 
+export function UserMenu({ onSignOutClick }: UserMenuProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -42,7 +43,7 @@ export function UserMenu() {
         </DropdownMenuItem>
         <DropdownMenuItem
           className="cursor-pointer"
-          onClick={() => showAlert("Hey There", "Authentication and database integration coming in future releases of this project!")}
+          onClick={onSignOutClick}
         >
           <span>Sign out</span>
         </DropdownMenuItem>
