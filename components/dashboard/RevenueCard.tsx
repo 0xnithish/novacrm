@@ -21,7 +21,7 @@ export function RevenueCard({ revenueData, totalRevenue }: RevenueCardProps) {
   const totalValue = revenueData.reduce((sum, item) => sum + item.value, 0)
 
   return (
-    <Card className="gap-3">
+    <Card className="w-full max-w-full overflow-hidden gap-3">
       <CardHeader className="pb-4">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <CardTitle className="text-base font-semibold sm:text-lg">Revenue</CardTitle>

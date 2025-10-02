@@ -15,9 +15,9 @@ export default function Home() {
   const [chartType, setChartType] = useState<'line' | 'bar'>('line')
 
   return (
-    <div className="space-y-6">
+    <div className="w-full max-w-full overflow-x-hidden space-y-6">
       {/* Performance Section */}
-      <div>
+      <div className="w-full max-w-full overflow-x-hidden grid gap-6 lg:grid-cols-1">
         {/* Performance Chart */}
         <PerformanceAreaChart
           data={mockPerformanceData}
@@ -27,7 +27,7 @@ export default function Home() {
       </div>
 
       {/* Bottom Section */}
-  <div className="grid gap-6 lg:grid-cols-[minmax(0,_1.7fr)_minmax(0,_1fr)]">
+      <div className="w-full max-w-full overflow-x-hidden grid gap-6 lg:grid-cols-[minmax(0,_1.7fr)_minmax(0,_1fr)]">
         {/* Recent Leads */}
         <LeadsTable
           leads={mockLeads}

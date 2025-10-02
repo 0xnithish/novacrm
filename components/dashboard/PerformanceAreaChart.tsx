@@ -139,12 +139,12 @@ export function PerformanceAreaChart({ data, chartType, onChartTypeChange }: Per
   }
 
   return (
-    <Card className="col-span-2">
-      <CardHeader >
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-            {/* KPI Cards */}
-            <div className="grid gap-6 md:grid-cols-2 flex-1">
+    <Card className="w-full max-w-full overflow-hidden">
+      <CardHeader className="pb-4">
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            {/* KPI Cards - Compact horizontal layout */}
+            <div className="flex flex-col gap-2 sm:flex-row sm:gap-3 flex-1">
               <KPICard
                 title="Total Amount"
                 value={mockKPIData.totalAmount}
@@ -152,17 +152,19 @@ export function PerformanceAreaChart({ data, chartType, onChartTypeChange }: Per
                 format="currency"
                 currency="USD"
                 trend={{ value: "12.5%", positive: true, label: "vs last month" }}
+                className="flex-1"
               />
               <KPICard
                 title="Total Deals"
                 value={mockKPIData.totalDeals}
                 format="number"
                 trend={{ value: "8", positive: true, label: "vs last month" }}
+                className="flex-1"
               />
             </div>
 
             {/* Chart Type Toggle */}
-            <div className="flex justify-end gap-2 self-end md:self-start">
+            <div className="flex justify-end gap-2">
               <Toggle
                 pressed={chartType === 'line'}
                 onPressedChange={() => onChartTypeChange('line')}
@@ -212,7 +214,7 @@ export function PerformanceAreaChart({ data, chartType, onChartTypeChange }: Per
               ))}
             </div>
           </div>
-          <div className="h-80">
+          <div className="h-80 w-full max-w-full overflow-hidden">
             <ResponsiveContainer width="100%" height="100%">
               {chartType === 'line' ? (
                 <AreaChart data={data} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>

@@ -92,50 +92,44 @@ export function KPICard({
   return (
     <article
       className={cn(
-        "group relative flex h-full min-h-[120px] flex-col justify-between overflow-hidden rounded-xl border border-border bg-card px-6 pt-5 text-card-foreground shadow-[0_18px_45px_-20px_rgba(15,23,42,0.18)] transition-shadow dark:shadow-[0_18px_45px_-18px_rgba(255,255,255,0.05)]",
+        "group relative flex h-full min-h-[80px] flex-col justify-center overflow-hidden rounded-lg border border-border bg-card px-4 py-3 text-card-foreground shadow-sm transition-shadow hover:shadow-md",
         className
       )}
     >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute left-[60%] top-[-35%] rounded-full transition-opacity duration-300 group-hover:opacity-80"
-      />
-
-      <div className="relative flex flex-col gap-4">
-        <div className="flex items-start justify-between gap-4">
-          <p className="text-sm font-medium text-muted-foreground">{title}</p>
+      <div className="relative flex flex-col gap-2">
+        <div className="flex items-start justify-between gap-2">
+          <p className="text-xs font-medium text-muted-foreground">{title}</p>
           {subtitle ? (
-            <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
               {subtitle}
             </span>
           ) : null}
         </div>
 
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-4 mb-2 sm:mb-0">
-          <span className="text-3xl font-semibold text-card-foreground">
+        <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between sm:gap-2">
+          <span className="text-2xl font-bold text-card-foreground">
             {mergedValue}
           </span>
 
           {trend && trendDisplay ? (
             <div
               className={cn(  
-                "inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold whitespace-nowrap self-start sm:self-auto",
+                "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold whitespace-nowrap self-start sm:self-auto",
                 trend.positive
-                  ? "bg-emerald-50 text-emerald-600"
-                  : "bg-rose-50 text-rose-600"
+                  ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400"
+                  : "bg-rose-50 text-rose-600 dark:bg-rose-950 dark:text-rose-400"
               )}
             >
               {trend.positive ? (
-                <TrendingUp className="h-3.5 w-3.5" aria-hidden />
+                <TrendingUp className="h-3 w-3" aria-hidden />
               ) : (
-                <TrendingDown className="h-3.5 w-3.5" aria-hidden />
+                <TrendingDown className="h-3 w-3" aria-hidden />
               )}
               <span>{trendDisplay}</span>
               {trend.label ? (
                 <span
                   className={cn(
-                    "text-[10px] font-medium whitespace-nowrap",
-                    trend.positive ? "text-emerald-700" : "text-rose-700"
+                    "text-[10px] font-medium whitespace-nowrap opacity-80"
                   )}
                 >
                   {trend.label}

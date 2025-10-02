@@ -24,7 +24,7 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
       
       <main
         className={cn(
-          "flex flex-1 flex-col transition-all duration-300 ease-in-out min-w-0 max-w-full",
+          "flex flex-1 flex-col transition-all duration-300 ease-in-out min-w-0 max-w-full overflow-x-hidden",
           // Desktop: margin based on sidebar state
           !isMobile && (isCollapsed ? "ml-16" : "ml-50"),
           // Mobile: no margin (sidebar is overlay)
@@ -32,7 +32,7 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
         )}
       >
         <LayoutHeader />
-        <div className="flex-1 overflow-auto p-4 md:p-6 max-w-full">
+        <div className="flex-1 overflow-auto p-4 md:p-6 max-w-full overflow-x-hidden">
           <div className="max-w-full overflow-x-hidden">
             {children}
           </div>

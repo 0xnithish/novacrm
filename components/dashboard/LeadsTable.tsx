@@ -54,7 +54,7 @@ export function LeadsTable({ leads, leadsCount }: LeadsTableProps) {
   const displayedLeads = leads.slice(0, 2)
 
   return (
-    <Card>
+    <Card className="w-full max-w-full overflow-hidden">
       <CardHeader className="pb-0">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
@@ -109,7 +109,7 @@ export function LeadsTable({ leads, leadsCount }: LeadsTableProps) {
           ))}
         </div>
         <div className="hidden md:block">
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto w-full max-w-full">
             <table className="w-full">
               <thead className="border-b border-border bg-muted/40">
                 <tr>
