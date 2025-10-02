@@ -11,6 +11,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command"
+import { DialogTitle } from "@/components/ui/dialog"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { mockLeads } from "@/lib/data/mock-data"
@@ -19,6 +20,22 @@ import { cn } from "@/lib/utils"
 interface SearchDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
+}
+
+// Pure function moved outside component for better performance
+function getStatusColor(status: string): string {
+  switch (status) {
+    case "new":
+      return "bg-blue-500/10 text-blue-500"
+    case "qualified":
+      return "bg-purple-500/10 text-purple-500"
+    case "in progress":
+      return "bg-yellow-500/10 text-yellow-500"
+    case "closed":
+      return "bg-green-500/10 text-green-500"
+    default:
+      return "bg-gray-500/10 text-gray-500"
+  }
 }
 
 export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
@@ -56,23 +73,9 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
     onOpenChange(false)
   }
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "new":
-        return "bg-blue-500/10 text-blue-500"
-      case "qualified":
-        return "bg-purple-500/10 text-purple-500"
-      case "in progress":
-        return "bg-yellow-500/10 text-yellow-500"
-      case "closed":
-        return "bg-green-500/10 text-green-500"
-      default:
-        return "bg-gray-500/10 text-gray-500"
-    }
-  }
-
   return (
     <CommandDialog open={open} onOpenChange={onOpenChange} shouldFilter={false}>
+      <DialogTitle className="sr-only">Search Leads</DialogTitle>
       <CommandInput 
         placeholder="Search by name, email, or phone..." 
         value={searchQuery}

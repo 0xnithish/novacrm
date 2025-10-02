@@ -51,13 +51,22 @@ export function AppSidebar() {
   useEffect(() => {
     setIsDealsOpen(isOnDealsRoute)
 
-    // Load user data from localStorage
-    const savedProfile = localStorage.getItem('userProfile')
-    if (savedProfile) {
-      const parsedProfile = JSON.parse(savedProfile)
-      const fullName = `${parsedProfile.firstName} ${parsedProfile.lastName}`
-      setUserName(fullName)
-      setUserEmail(parsedProfile.email)
+    // Load user data from localStorage with error handling
+    try {
+      const savedProfile = localStorage.getItem('userProfile')
+      if (savedProfile) {
+        const parsedProfile = JSON.parse(savedProfile)
+        if (parsedProfile.firstName && parsedProfile.lastName) {
+          const fullName = `${parsedProfile.firstName} ${parsedProfile.lastName}`
+          setUserName(fullName)
+        }
+        if (parsedProfile.email) {
+          setUserEmail(parsedProfile.email)
+        }
+      }
+    } catch (error) {
+      console.error('Failed to load user profile from localStorage:', error)
+      // Keep default values
     }
   }, [isOnDealsRoute])
 
@@ -324,28 +333,29 @@ export function AppSidebar() {
               <Button
                 variant="ghost"
                 className={cn(
-                  "w-full",
-                  isCollapsed ? "justify-center px-0" : "justify-between p-3"
+                  "w-full h-auto",
+                  isCollapsed ? "justify-center px-0 py-2" : "justify-between p-2"
                 )}
               >
                 <div className={cn(
                   "flex items-center",
                   isCollapsed ? "justify-center" : "gap-2"
                 )}>
-                  <Avatar className="h-7 w-7 flex-shrink-0">
+                  <Avatar className="h-8 w-8 flex-shrink-0">
                     <AvatarImage src="/user.png" alt="User" />
                     <AvatarFallback>
                       <User2 className="h-4 w-4" />
                     </AvatarFallback>
                   </Avatar>
                   {!isCollapsed && (
-                    <div className="flex flex-col items-start text-sm">
-                      <span className="font-medium text-sidebar-foreground">{userName}</span>
-                      <span className="text-xs text-muted-foreground">{userEmail}</span>
+                    <div className="flex flex-col items-start text-sm min-w-0 flex-1">
+                      <div className="flex justify-between w-full">
+                          <span className="flex font-medium text-sidebar-foreground truncate w-full">{userName}</span>
+                      </div>
+                      <span className="text-xs text-muted-foreground truncate w-full">{userEmail}</span>
                     </div>
                   )}
                 </div>
-                {!isCollapsed && <ChevronUp className="h-4 w-4" />}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent side="top" className="w-64">

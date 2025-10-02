@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, createElement, useContext, useState, ReactNode } from 'react'
-import type { Activity, Note, Lead } from '@/types'
+import type { Note, Lead } from '@/types'
 
 interface LeadDetailsContextType {
   selectedLead: Lead | null
