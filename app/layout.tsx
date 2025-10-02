@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
-import { AppSidebar } from "@/components/AppSidebar";
-import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
-import { LayoutHeader } from "@/components/LayoutHeader";
+import { LayoutWrapper } from "@/components/LayoutWrapper";
 import { ThemeProvider } from "next-themes";
 import { DealDetailsProvider } from "@/hooks/useDealDetails";
 import { LeadDetailsProvider } from "@/hooks/useLeadDetails";
+import { SidebarToggleProvider } from "@/hooks/use-sidebar-toggle";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,21 +33,15 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <SidebarProvider>
+          <SidebarToggleProvider>
             <DealDetailsProvider>
               <LeadDetailsProvider>
-                <div className="flex min-h-screen w-full">
-                  <AppSidebar />
-                  <SidebarInset className="flex flex-1 flex-col">
-                    <LayoutHeader />
-                    <div className="flex-1 overflow-auto p-6">
-                      {children}
-                    </div>
-                  </SidebarInset>
-                </div>
+                <LayoutWrapper>
+                  {children}
+                </LayoutWrapper>
               </LeadDetailsProvider>
             </DealDetailsProvider>
-          </SidebarProvider>
+          </SidebarToggleProvider>
         </ThemeProvider>
       </body>
     </html>

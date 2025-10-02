@@ -6,22 +6,8 @@ import Image from "next/image"
 import { usePathname } from "next/navigation"
 
 import { useDealDetails } from "@/hooks/useDealDetails"
+import { useSidebarToggle } from "@/hooks/use-sidebar-toggle"
 import { cn } from "@/lib/utils"
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
-} from "@/components/ui/sidebar"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -49,10 +35,12 @@ import {
   Phone,
   DollarSign,
   Calendar,
+  PanelRight,
 } from "lucide-react"
 
 export function AppSidebar() {
   const { selectedDeal, closeDealDetails } = useDealDetails()
+  const { isCollapsed, toggleSidebar } = useSidebarToggle()
   const { showAlert, DemoAlertComponent } = useDemoAlert()
   const pathname = usePathname()
   const isOnDealsRoute = pathname?.startsWith("/deals") ?? false
@@ -74,127 +62,174 @@ export function AppSidebar() {
   }, [isOnDealsRoute])
 
   return (
-    <Sidebar collapsible="icon">
-      <SidebarHeader className=" border-sidebar-border">
-        <div className="flex items-center justify-between p-2">
-          <div className="flex items-center gap-2">
-            <Image
-              src="/logo.svg"
-              alt="Nova logo"
-              width={20}
-              height={20}
-              className="rounded-sm"
-              priority
-            />
-            <span className="text-lg font-semibold">Nova</span>
-          </div>
+    <div
+      className={cn(
+        "fixed left-0 top-0 h-screen bg-sidebar border-r border-sidebar-border transition-all duration-300 ease-in-out z-20 flex flex-col",
+        isCollapsed ? "w-16" : "w-50"
+      )}
+    >
+      {/* Header */}
+      <div className="p-4  border-sidebar-border">
+        <div className={cn(
+          "flex items-center",
+          isCollapsed ? "justify-center" : "justify-between"
+        )}>
+          {isCollapsed ? (
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={toggleSidebar} 
+              className="h-8 w-8 p-0"
+            >
+              <PanelRight className="h-4 w-4" />
+            </Button>
+          ) : (
+            <>
+              <div className="flex items-center gap-2">
+                <Image
+                  src="/logo.svg"
+                  alt="Nova logo"
+                  width={20}
+                  height={20}
+                  className="rounded-sm flex-shrink-0"
+                  priority
+                />
+                <span className="text-lg font-semibold text-sidebar-foreground">Nova</span>
+              </div>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={toggleSidebar} 
+                className="h-8 w-8 p-0"
+              >
+                <PanelRight className="h-4 w-4" />
+              </Button>
+            </>
+          )}
         </div>
-      </SidebarHeader>
+      </div>
 
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link href="/" className="flex items-center gap-2">
-                    <LayoutDashboard className="h-4 w-4" />
-                    <span>Overview</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+      {/* Navigation */}
+      <ScrollArea className="flex-1">
+        <nav className={cn(
+          "space-y-2",
+          isCollapsed ? "p-2" : "p-4"
+        )}>
+          {/* Overview */}
+          <Link href="/">
+            <Button
+              variant={pathname === "/" ? "secondary" : "ghost"}
+              className={cn(
+                "w-full",
+                isCollapsed ? "justify-center px-0" : "justify-start px-3 gap-3"
+              )}
+            >
+              <LayoutDashboard className="h-4 w-4 flex-shrink-0" />
+              {!isCollapsed && <span>Overview</span>}
+            </Button>
+          </Link>
 
-              <SidebarMenuItem>
-                <div className="flex flex-col">
-                  <div className="flex items-center">
-                    <SidebarMenuButton asChild className="flex-1">
-                      <Link href="/deals" className="flex items-center gap-2">
-                        <Building className="h-4 w-4" />
-                        <span>Deals</span>
-                      </Link>
-                    </SidebarMenuButton>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-8 w-8 p-0 hover:bg-accent"
-                      onClick={() => setIsDealsOpen((prev) => !prev)}
-                    >
-                      <ChevronDown
-                        className={cn(
-                          "h-4 w-4 transition-transform duration-200",
-                          isDealsOpen ? "rotate-180" : "rotate-0"
-                        )}
-                      />
-                    </Button>
-                  </div>
-
-                  {isDealsOpen && (
-                    <SidebarMenuSub>
-                      <SidebarMenuSubItem>
-                        <SidebarMenuSubButton
-                          asChild
-                          isActive={pathname === "/deals/active"}
-                        >
-                          <Link href="/deals/active">
-                            <CheckSquare className="h-4 w-4" />
-                            <span>Active</span>
-                          </Link>
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
-                      <SidebarMenuSubItem>
-                        <SidebarMenuSubButton
-                          asChild
-                          isActive={pathname === "/deals/closed"}
-                        >
-                          <Link href="/deals/closed">
-                            <Settings className="h-4 w-4" />
-                            <span>Closed</span>
-                          </Link>
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
-                    </SidebarMenuSub>
+          {/* Deals */}
+          <div>
+            <Button
+              variant={pathname?.startsWith("/deals") ? "secondary" : "ghost"}
+              className={cn(
+                "w-full",
+                isCollapsed ? "justify-center px-0" : "justify-between px-3"
+              )}
+              onClick={() => !isCollapsed && setIsDealsOpen(!isDealsOpen)}
+            >
+              <div className={cn(
+                "flex items-center",
+                isCollapsed ? "justify-center" : "gap-3"
+              )}>
+                <Building className="h-4 w-4 flex-shrink-0" />
+                {!isCollapsed && <span>Deals</span>}
+              </div>
+              {!isCollapsed && (
+                <ChevronDown
+                  className={cn(
+                    "h-4 w-4 transition-transform",
+                    isDealsOpen && "rotate-180"
                   )}
-                </div>
-              </SidebarMenuItem>
+                />
+              )}
+            </Button>
 
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link href="/integration" className="flex items-center gap-2">
-                    <Plug className="h-4 w-4" />
-                    <span>Integration</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link href="/tasks" className="flex items-center gap-2">
+            {!isCollapsed && isDealsOpen && (
+              <div className="ml-4 mt-2 space-y-1">
+                <Link href="/deals/active">
+                  <Button
+                    variant={pathname === "/deals/active" ? "secondary" : "ghost"}
+                    size="sm"
+                    className="w-full justify-start gap-2"
+                  >
                     <CheckSquare className="h-4 w-4" />
-                    <span>Tasks</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+                    <span>Active</span>
+                  </Button>
+                </Link>
+                <Link href="/deals/closed">
+                  <Button
+                    variant={pathname === "/deals/closed" ? "secondary" : "ghost"}
+                    size="sm"
+                    className="w-full justify-start gap-2"
+                  >
+                    <Settings className="h-4 w-4" />
+                    <span>Closed</span>
+                  </Button>
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {/* Integration */}
+          <Link href="/integration">
+            <Button
+              variant={pathname === "/integration" ? "secondary" : "ghost"}
+              className={cn(
+                "w-full",
+                isCollapsed ? "justify-center px-0" : "justify-start px-3 gap-3"
+              )}
+            >
+              <Plug className="h-4 w-4 flex-shrink-0" />
+              {!isCollapsed && <span>Integration</span>}
+            </Button>
+          </Link>
+
+          {/* Tasks */}
+          <Link href="/tasks">
+            <Button
+              variant={pathname === "/tasks" ? "secondary" : "ghost"}
+              className={cn(
+                "w-full",
+                isCollapsed ? "justify-center px-0" : "justify-start px-3 gap-3"
+              )}
+            >
+              <CheckSquare className="h-4 w-4 flex-shrink-0" />
+              {!isCollapsed && <span>Tasks</span>}
+            </Button>
+          </Link>
+        </nav>
 
         {/* Deal Details Section */}
-        {selectedDeal && (
-          <SidebarGroup>
-            <SidebarGroupLabel className="flex items-center justify-between">
-              <span>Deal Details</span>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={closeDealDetails}
-                className="h-6 w-6 p-0"
-              >
-                <X className="h-3 w-3" />
-              </Button>
-            </SidebarGroupLabel>
-            <SidebarGroupContent>
+        {selectedDeal && !isCollapsed && (
+          <div className="px-4 mt-6">
+            <Separator className="mb-4" />
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h4 className="font-semibold text-sm text-sidebar-foreground">Deal Details</h4>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={closeDealDetails}
+                  className="h-6 w-6 p-0"
+                >
+                  <X className="h-3 w-3" />
+                </Button>
+              </div>
+
               <ScrollArea className="h-[300px]">
-                <div className="space-y-4 p-2">
+                <div className="space-y-4">
                   <div>
                     <h4 className="font-semibold text-sm">{selectedDeal.title}</h4>
                     <p className="text-xs text-muted-foreground">ID: {selectedDeal.id}</p>
@@ -258,82 +293,86 @@ export function AppSidebar() {
                   </div>
                 </div>
               </ScrollArea>
-            </SidebarGroupContent>
-          </SidebarGroup>
+            </div>
+          </div>
         )}
-      </SidebarContent>
+      </ScrollArea>
 
-      <SidebarFooter className="border-t border-sidebar-border p-2">
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              {/* <Link href="/settings" className="flex items-center gap-2">
-                <Settings className="h-4 w-4" />
-                <span>Settings</span>
-              </Link> */}
-            </SidebarMenuButton>
-          </SidebarMenuItem>
+      {/* Footer */}
+      <div className={cn(
+        "border-t border-sidebar-border",
+        isCollapsed ? "p-2" : "p-4"
+      )}>
+        {/* Support */}
+        <Link href="/support">
+          <Button
+            variant="ghost"
+            className={cn(
+              "w-full",
+              isCollapsed ? "justify-center px-0" : "justify-start px-3 gap-3"
+            )}
+          >
+            <HelpCircle className="h-4 w-4 flex-shrink-0" />
+            {!isCollapsed && <span>Help & Support</span>}
+          </Button>
+        </Link>
 
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <Link href="/support" className="flex items-center gap-2">
-                <HelpCircle className="h-4 w-4" />
-                <span>Help & Support</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-
-          <SidebarMenuItem>
-            <Separator className="my-2" />
-          </SidebarMenuItem>
-
-          <SidebarMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuButton className="w-full cursor-pointer p-0 py-6 hover:bg-accent">
-                  <div className="flex w-full items-center justify-start gap-2 px-2">
-                    <Avatar className="h-7 w-7">
-                      <AvatarImage src="/user.png" alt="User" />
-                      <AvatarFallback>
-                        <User2 className="h-4 w-4" />
-                      </AvatarFallback>
-                    </Avatar>
+        {/* User Profile */}
+        <div className="mt-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                className={cn(
+                  "w-full",
+                  isCollapsed ? "justify-center px-0" : "justify-between p-3"
+                )}
+              >
+                <div className={cn(
+                  "flex items-center",
+                  isCollapsed ? "justify-center" : "gap-2"
+                )}>
+                  <Avatar className="h-7 w-7 flex-shrink-0">
+                    <AvatarImage src="/user.png" alt="User" />
+                    <AvatarFallback>
+                      <User2 className="h-4 w-4" />
+                    </AvatarFallback>
+                  </Avatar>
+                  {!isCollapsed && (
                     <div className="flex flex-col items-start text-sm">
-                      <span className="font-medium">{userName}</span>
+                      <span className="font-medium text-sidebar-foreground">{userName}</span>
                       <span className="text-xs text-muted-foreground">{userEmail}</span>
                     </div>
-                    <ChevronUp className="ml-auto h-4 w-4" />
-                  </div>
-                </SidebarMenuButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                side="top"
-                className="w-[--radix-popper-anchor-width] cursor-pointer"
+                  )}
+                </div>
+                {!isCollapsed && <ChevronUp className="h-4 w-4" />}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent side="top" className="w-64">
+              <DropdownMenuItem className="cursor-pointer" asChild>
+                <Link href="/account">
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Account</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer" asChild>
+                <Link href="/settings">
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>Settings</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={() => showAlert("Hey there!", "Authentication and database integration coming in future releases of this project!")}
               >
-                <DropdownMenuItem className="cursor-pointer" asChild>
-                  <Link href="/account">
-                    <User className="h-4 w-full justify-start" />
-                    <span>Account</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer" asChild>
-                  <Link href="/settings">
-                    <Settings className="h-4 w-full justify-start" />
-                    <span>Settings</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  className="cursor-pointer"
-                  onClick={() => showAlert("Demo Project", "Authentication and database integration coming soon! This is a demo portfolio project showcasing modern web development capabilities.")}
-                >
-                  <span>Sign out</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarFooter>
+                <span>Sign out</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </div>
+
       <DemoAlertComponent />
-    </Sidebar>
+    </div>
   )
 }

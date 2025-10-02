@@ -1,6 +1,5 @@
 "use client"
 
-import { SidebarTrigger } from "@/components/ui/sidebar"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,21 +15,36 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { User, Settings, Moon, Sun, HelpCircle } from "lucide-react"
+import { User, Settings, Moon, Sun, HelpCircle, Search } from "lucide-react"
 import { useTheme } from "next-themes"
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useDemoAlert } from "@/components/ui/demo-alert"
+import { SearchDialog } from "@/components/SearchDialog"
 
 function LayoutHeaderContent() {
   const { theme, setTheme } = useTheme()
   const { showAlert, DemoAlertComponent } = useDemoAlert()
   const [mounted, setMounted] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
   const pathname = usePathname()
 
   useEffect(() => {
     setMounted(true)
+  }, [])
+
+  // Keyboard shortcut for search (Cmd+K / Ctrl+K)
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault()
+        setSearchOpen((open) => !open)
+      }
+    }
+
+    document.addEventListener("keydown", down)
+    return () => document.removeEventListener("keydown", down)
   }, [])
 
   const getPageName = (path: string) => {
@@ -95,8 +109,7 @@ function LayoutHeaderContent() {
 
   if (!mounted) {
     return (
-      <header className="sticky top-0 z-50 flex items-center gap-3 border-b border-border bg-background px-6 py-4">
-        <SidebarTrigger className="size-8 md:hidden" />
+      <header className="sticky top-0 z-50 flex items-center gap-4 border-b border-border bg-background px-6 py-4">
         <div className="flex items-center gap-2">
           <h1 className="text-base font-semibold">{pageName}</h1>
           <TooltipProvider>
@@ -111,7 +124,9 @@ function LayoutHeaderContent() {
           </TooltipProvider>
         </div>
 
-        <div className="flex items-center gap-2 ml-auto">
+        <div className="flex-1"></div>
+
+        <div className="flex items-center gap-2 flex-shrink-0">
           <div className="flex items-center gap-2">
             <Sun className="h-4 w-4" />
             <div className="w-11 h-6 rounded-full bg-input" />
@@ -156,8 +171,7 @@ function LayoutHeaderContent() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 flex items-center gap-3 border-b border-border bg-background px-6 py-4">
-        <SidebarTrigger className="size-8 md:hidden" />
+      <header className="sticky top-0 z-50 flex items-center gap-4 border-b border-border bg-background px-6 py-4">
         <div className="flex items-center gap-2">
           <h1 className="text-base font-semibold">{pageName}</h1>
           <TooltipProvider>
@@ -172,7 +186,24 @@ function LayoutHeaderContent() {
           </TooltipProvider>
         </div>
 
-        <div className="flex items-center gap-2 ml-auto">
+        {/* Search Bar */}
+        <div className="flex-1 flex justify-center">
+          <div className="w-full max-w-md">
+            <Button
+              variant="outline"
+              onClick={() => setSearchOpen(true)}
+              className="w-full justify-start text-muted-foreground font-normal"
+            >
+              <Search className="h-4 w-4 mr-2" />
+              <span>Search leads...</span>
+              <kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+                <span className="text-xs">⌘</span>K
+              </kbd>
+            </Button>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2 flex-shrink-0">
           <div className="flex items-center gap-2">
             <Sun className="h-4 w-4" />
             <Switch
@@ -208,7 +239,7 @@ function LayoutHeaderContent() {
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="cursor-pointer"
-                onClick={() => showAlert("Demo Project", "Authentication and database integration coming soon! This is a demo portfolio project showcasing modern web development capabilities.")}
+                onClick={() => showAlert("Hey There", "Authentication and database integration coming in future releases of this project!")}
               >
                 <span>Sign out</span>
               </DropdownMenuItem>
@@ -216,6 +247,7 @@ function LayoutHeaderContent() {
           </DropdownMenu>
         </div>
       </header>
+      <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
       <DemoAlertComponent />
     </>
   )
